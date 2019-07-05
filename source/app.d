@@ -174,7 +174,7 @@ void main()
 	final switch (highlight)
 	{
 		case 0:
-			updateList(gMenu, shighlight, titles, enviroment.get("HOME") ~ "/my-stuff/animeList/files/animes/");
+			updateList(gMenu, shighlight, titles, environment.get("HOME") ~ "/my-stuff/animeList/files/animes/");
 			break;
 		case 1:
 			updateList(gMenu, shighlight, titles, environment.get("HOME") ~ "/my-stuff/animeList/files/series/");
