@@ -1,0 +1,20 @@
+{
+	"name": "anime-list",
+	"description": "Repository for all your animes",
+
+	"sourcePaths": [
+		"source"
+	],
+	
+	"importPaths": [
+		"source"
+	],
+
+	"targetPath": "bin",
+	"targetName": "animelist",
+
+	"dependencies": {
+		"silly": "~>0.8.2",
+		"riverd-ncurses": "~>1.0.3"
+	}
+}
