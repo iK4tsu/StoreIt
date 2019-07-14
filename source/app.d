@@ -8,13 +8,7 @@ import std.process : environment;
 
 import source.titlesMenu;
 import source.list;
-
-/* write a sentence in the middle of a given line */
-void mvwprintcentery(WINDOW* win, int width, int line, int x, string msg)
-{
-	int center = (width + x) / 2 - (cast(int)msg.length / 2);
-	mvwprintw(win, line, center, toStringz(msg));
-}
+import source.functions;
 
 void main()
 {
@@ -23,50 +17,32 @@ void main()
 	noecho();
 	cbreak();
 
-	/* get window size */
-	int yMax, xMax;
-	getmaxyx(stdscr, yMax, xMax);
-
-	/* welcome window coordinates */
-	int height = yMax - 5;
-	int width = xMax - 5;
-
-	/* create welcome menu window */
-	WINDOW* wMenu = newwin(height, width, 2, 2);
-	box(wMenu, 0, 0);
-
-	/* refresh main screen to acknowledge the new window */
-	refresh();
-
-	/* enable use of keyboard */
-	keypad(wMenu, true);
+	Mywindow mainScreen = newWindow(5, 5, 2, 2, true);
 
 	/* print in the midle of the first line of welcome menu */
-	mvwprintcentery(wMenu, width, 1, 2, "Welcome to your own video organizer!");
-	wrefresh(wMenu);
-
+	mvwprintcentery(mainScreen.win, mainScreen.width, 1, "Welcome to your own video organizer!");
+	wrefresh(mainScreen.win);
 
 	string[4] vChoices = ["Animes", "Series", "Movies", "Exit"];
-	int highlight = 0;
 
 	menu1:
 	while (true)
 	{
 		for (int i = 0; i < vChoices.length; i++)
 		{
-			/* enable background highligh for the selected option */
-			if (i ==  highlight)
-				wattron(wMenu, WA_REVERSE);
+			/* enable background highlight for the selected option */
+			if (i == mainScreen.highlight)
+				wattron(mainScreen.win, WA_REVERSE);
 
-			mvwprintw(wMenu, i + 2, 1, toStringz(vChoices[i]));
-			wmove(wMenu, highlight + 2, 0);
-			wattroff(wMenu, WA_REVERSE);
+			mvwprintw(mainScreen.win, i + 2, 1, toStringz(vChoices[i]));
+			wmove(mainScreen.win, mainScreen.highlight + 2, 0);
+			wattroff(mainScreen.win, WA_REVERSE);
 		}
 
-		int choice = wgetch(wMenu);
+		int choice = wgetch(mainScreen.win);
 
 		/* check if the pressed key is ENTER */
-		if (choice == 10 && highlight == 3)
+		if (choice == 10 && mainScreen.highlight == 3)
 		{
 			endwin();
 			return;
@@ -77,52 +53,44 @@ void main()
 		switch (choice)
 		{
 			case KEY_UP:
-				highlight--;
-				if (highlight < 0)
-					highlight = 0;
+				mainScreen.highlight--;
+				if (mainScreen.highlight < 0)
+					mainScreen.highlight = 0;
 				break;
 			case KEY_DOWN:
-				highlight++;
-				if (highlight > vChoices.length - 1)
-					highlight = vChoices.length - 1;
+				mainScreen.highlight++;
+				if (mainScreen.highlight > vChoices.length - 1)
+					mainScreen.highlight = vChoices.length - 1;
 				break;
 			default:
 		}
 	}
 
-	/* create the selection window */
-	WINDOW* sMenu = newwin(height / 4, width / 10, 4, 10);
-	box(sMenu, 0, 0);
-
-	refresh();
-	wrefresh(sMenu);
-
-	keypad(sMenu, true);
+	Mywindow secondScreen = newWindow(50, 200, 4, 10, true);
 
 	string[4] sChoices = ["Add", "Remove", "Finish", "Return"];
-	int shighlight = 0;
 
 	while (true)
 	{
 		for (int i = 0; i < sChoices.length; i++)
 		{
-			/* enable background highligh for the selected option */
-			if (i ==  shighlight)
-				wattron(sMenu, WA_REVERSE);
+			/* enable background highlight for the selected option */
+			if (i ==  secondScreen.highlight)
+				wattron(secondScreen.win, WA_REVERSE);
 
-			mvwprintw(sMenu, i + 1, 1, toStringz(sChoices[i]));
-			wmove(sMenu, shighlight + 1, 0);
-			wattroff(sMenu, WA_REVERSE);
+			mvwprintw(secondScreen.win, i + 1, 1, toStringz(sChoices[i]));
+			wmove(secondScreen.win, secondScreen.highlight + 1, 0);
+			wattroff(secondScreen.win, WA_REVERSE);
 		}
 
-		int choice = wgetch(sMenu);
+		int choice = wgetch(secondScreen.win);
 
 		/* check if the pressed key is ENTER */
-		if (choice == 10 && shighlight == 3)
+		if (choice == 10 && secondScreen.highlight == 3)
 		{
-			werase(sMenu);
-			wrefresh(sMenu);
-			delwin(sMenu);
+			werase(secondScreen.win);
+			wrefresh(secondScreen.win);
+			delwin(secondScreen.win);
 			goto menu1;
 		}
 		else if (choice == 10)
@@ -131,61 +99,54 @@ void main()
 		switch (choice)
 		{
 			case KEY_UP:
-				shighlight--;
-				if (shighlight < 0)
-					shighlight = 0;
+				secondScreen.highlight--;
+				if (secondScreen.highlight < 0)
+					secondScreen.highlight = 0;
 				break;
 			case KEY_DOWN:
-				shighlight++;
-				if (shighlight > sChoices.length - 1)
-					shighlight = sChoices.length - 1;
+				secondScreen.highlight++;
+				if (secondScreen.highlight > sChoices.length - 1)
+					secondScreen.highlight = sChoices.length - 1;
 				break;
 			default:
 		}
 	}
 
-	/* create a new generic window */
-	WINDOW* gMenu = newwin(height - 8, width - 30, 6, 20);
-	box(gMenu, 0, 0);
-	
-	refresh();
-	wrefresh(gMenu);
+	Mywindow titleScreen = newWindow(5, 5, 2, 2, true);
 
-	keypad(gMenu, true);
-
-	mvwprintcentery(gMenu, width - 30, 1, 0, sChoices[shighlight]);
+	mvwprintcentery(titleScreen.win, titleScreen.width, 1, sChoices[secondScreen.highlight]);
 
 	/* every title to add/remove/finish */
-	string[] titles = tmenu(gMenu, sChoices[shighlight]);
+	string[] titles = tmenu(titleScreen.win, sChoices[secondScreen.highlight]);
 
 	/*
 	 * store file selection
 	 * 
-	 * highlight
+	 * mainScreen.highlight
 	 * 0 = Animes
 	 * 1 = Series
 	 * 2 = Movies
 	 * 
-	 * shighlight
+	 * secondScreen.highlight
 	 * 0 = Add
 	 * 1 = Remove
 	 * 2 = Finish
 	 */
-	final switch (highlight)
+	final switch (mainScreen.highlight)
 	{
 		case 0:
-			updateList(gMenu, shighlight, titles, environment.get("HOME") ~ "/my-stuff/animeList/files/animes/");
+			updateList(titleScreen.win, secondScreen.highlight, titles, environment.get("HOME") ~ "/my-stuff/animeList/files/animes/");
 			break;
 		case 1:
-			updateList(gMenu, shighlight, titles, environment.get("HOME") ~ "/my-stuff/animeList/files/series/");
+			updateList(titleScreen.win, secondScreen.highlight, titles, environment.get("HOME") ~ "/my-stuff/animeList/files/series/");
 			break;
 		case 2:
-			updateList(gMenu, shighlight, titles, environment.get("HOME") ~ "/my-stuff/animeList/files/movies/");
+			updateList(titleScreen.win, secondScreen.highlight, titles, environment.get("HOME") ~ "/my-stuff/animeList/files/movies/");
 			break;
 	}
 
-	werase(gMenu);
-	delwin(gMenu);
+	werase(titleScreen.win);
+	delwin(titleScreen.win);
 	endwin();
 
 	return;
