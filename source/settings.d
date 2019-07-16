@@ -1,17 +1,17 @@
-module source.options;
+module source.settings;
 
 import std.file : exists, mkdir;
 import std.process : environment;
 
-struct Options
+struct Settings
 {
 	string files;
 	string[] dir;
 }
 
-Options defaultSettings()
+Settings defaultSettings()
 {
-	Options op;
+	Settings op;
 
 	/* home path: "/home/whoami" */
 	immutable auto home = environment.get("HOME");

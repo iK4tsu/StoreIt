@@ -60,7 +60,7 @@ void newBox(WINDOW* win, int boxY, int boxX)
 }
 
 
-void mainOptions(ref Mywindow win, ref Mywindow secondScreen, ref Mywindow titleScreen)
+string mainOptions(ref Mywindow win, ref Mywindow secondScreen, ref Mywindow titleScreen)
 {
 	/* print in the midle of the first line of welcome menu */
 	mvwprintcentery(win.win, win.width, 1, "Welcome to your own video organizer!");
@@ -90,7 +90,7 @@ void mainOptions(ref Mywindow win, ref Mywindow secondScreen, ref Mywindow title
 		if (win.choice == 10 && win.highlight == 3)
 		{
 			endwin();
-			return;
+			return "exit";
 		}
 		else if(win.choice == 10)
 			break;
@@ -156,11 +156,6 @@ void mainOptions(ref Mywindow win, ref Mywindow secondScreen, ref Mywindow title
 		}
 	}
 
-	newBox(titleScreen.win, 0, 0);
-
-	/* every title to add/remove/finish */
-	string[] titles = tmenu(titleScreen, sChoices[secondScreen.highlight]);
-
 	/*
 		* store file selection
 		* 
@@ -174,20 +169,20 @@ void mainOptions(ref Mywindow win, ref Mywindow secondScreen, ref Mywindow title
 		* 1 = Remove
 		* 2 = Finish
 		*/
-	if (titles.length != 0)
-	{
-		final switch (win.highlight)
-		{
-			case 0:
-				updateList(titleScreen.win, secondScreen.highlight, titles, environment.get("HOME") ~ "/my-stuff/animeList/files/animes/");
-				break;
-			case 1:
-				updateList(titleScreen.win, secondScreen.highlight, titles, environment.get("HOME") ~ "/my-stuff/animeList/files/series/");
-				break;
-			case 2:
-				updateList(titleScreen.win, secondScreen.highlight, titles, environment.get("HOME") ~ "/my-stuff/animeList/files/movies/");
-				break;
-		}
-	}
-	return;
+	//if (titles.length != 0)
+	//{
+	//	final switch (win.highlight)
+	//	{
+	//		case 0:
+	//			updateList(titleScreen.win, secondScreen.highlight, titles, environment.get("HOME") ~ "/my-stuff/animeList/files/animes/");
+	//			break;
+	//		case 1:
+	//			updateList(titleScreen.win, secondScreen.highlight, titles, environment.get("HOME") ~ "/my-stuff/animeList/files/series/");
+	//			break;
+	//		case 2:
+	//			updateList(titleScreen.win, secondScreen.highlight, titles, environment.get("HOME") ~ "/my-stuff/animeList/files/movies/");
+	//			break;
+	//	}
+	//}
+	return sChoices[secondScreen.highlight];
 }

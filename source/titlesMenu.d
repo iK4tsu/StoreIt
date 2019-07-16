@@ -13,6 +13,8 @@ import source.functions;
 
 string[] tmenu(ref Mywindow titleScreen, string sChoice)
 {
+	newBox(titleScreen.win, 0, 0);
+
 	mvwprintcentery(titleScreen.win, titleScreen.width, 1, sChoice);
 
 	/* allows the user to see his inputs */
@@ -52,21 +54,22 @@ string[] tmenu(ref Mywindow titleScreen, string sChoice)
 		{
 			case "\\undo":
 				mvwprintw(titleScreen.win, y, x, toStringz(blank));
+
 				if ((y > 3 && x == 1) || (x == getmaxx(titleScreen.win) / 2 && y > 3))
 				{
 					y--;
-					titles[$ - 1] = null;
 				}
 				else if ((x == getmaxx(titleScreen.win) / 2) && y == 3)
 				{
 					y = getmaxy(titleScreen.win) - 2;
 					x = 1;
-					titles[$ - 1] = null;
 				}
+				titles = titles[0 .. $ - 1];
+
 				mvwprintw(titleScreen.win, y, x, toStringz(blank));
 				break;
 			case "\\cancel":
-				titles[0 .. $] = null;
+				titles = [];
 				werase(titleScreen.win);
 				return titles;
 			case "\\clear":
@@ -76,7 +79,7 @@ string[] tmenu(ref Mywindow titleScreen, string sChoice)
 				box(titleScreen.win, 0, 0);
 				mvwprintcentery(titleScreen.win, titleScreen.width, 1, sChoice);
 				mvwprintw(titleScreen.win, 2, 1, "Write the titles you want to %s ('\\done' when finished'):", toStringz(sChoice));
-				titles[0 .. $] = null;
+				titles = [];
 				break;
 			case "\\done":
 				break;
