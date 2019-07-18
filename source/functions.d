@@ -34,12 +34,9 @@ Mywindow newWindow(int height, int width, int yVert, int xVert, bool keyPad)
 {
 	Mywindow newwindow;
 
-	/* screen size */
-	getmaxyx(stdscr, newwindow.yMax, newwindow.xMax);
-
 	/* new windown dimensions */
-	newwindow.height = newwindow.yMax - height;
-	newwindow.width = newwindow.xMax - width;
+	newwindow.height = height;
+	newwindow.width = width;
 
 	/* creates a new invisible window */
 	newwindow.win = newwin(newwindow.height, newwindow.width, yVert, xVert);

@@ -25,10 +25,13 @@ void main()
 	Settings settings = defaultSettings();
 
 	/* all windows */
-	Mywindow mainScreen = newWindow(5, 5, 2, 2, true);
-	Mywindow secondScreen = newWindow(50, 200, 4, 10, true);
-	Mywindow titleScreen = newWindow(5, 5, 2, 2, true);
-	Mywindow manageScreen = newWindow(5, 5, 2, 2, true);
+	int stdscrY, stdscrX;
+	getmaxyx(stdscr, stdscrY, stdscrX);
+
+	Mywindow mainScreen = newWindow(stdscrY - 5, stdscrX - 5, 2, 2, true);
+	Mywindow secondScreen = newWindow(6, stdscrX - 200, 4, 10, true);
+	Mywindow titleScreen = newWindow(stdscrY - 5, stdscrX - 5, 2, 2, true);
+	Mywindow manageScreen = newWindow(stdscrY - 5, stdscrX - 5, 2, 2, true);
 
 	bool isOver = false;
 	string[] titles;
@@ -48,15 +51,24 @@ void main()
 		if (titles.length == 0)
 			continue;
 
-		isOver = manage(manageScreen, titles, settings);
+		isOver = manage(manageScreen, titles, settings, mainScreen.highlight, option);
 	} while (!isOver);
 
 	echo();
 	curs_set(1);
 	endwin();
 
+	// testing
 	import std.stdio : writeln;
-	writeln(titles);
+	import std.json;
+	string s = to!(string)(read("./source/animes.json"));
+	JSONValue j = parseJSON(s);
+
+	writeln(j["AnimeDetails"].array);
+	JSONValue jj = parseJSON(j["AnimeDetails"].toString);
+
+	writeln("NAME: ", jj[0]["name"].str);
+	writeln(jj[0]["seasons"][0]["season"].integer);
 
 	return;
 }
