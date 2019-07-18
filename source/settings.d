@@ -23,9 +23,11 @@ Settings defaultSettings()
 		mkdir(op.files ~ "/animes");
 		mkdir(op.files ~ "/series");
 		mkdir(op.files ~ "/movies");
-
-		op.dir ~= "/animes" ~ "/series" ~ "/movies";
 	}
+
+	op.dir ~= "/animes";
+	op.dir ~= "/series";
+	op.dir ~= "/movies";
 
 	return op;
 }
