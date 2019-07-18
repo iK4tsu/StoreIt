@@ -41,6 +41,10 @@ void drawlmanagescreen(WINDOW* manageScreen)
 
 bool manage(ref Mywindow manageScreen, string[] titles, ref Settings settings, int highlight, string option)
 {
+	//start_color();
+	//init_pair(1, COLOR_BLUE, COLOR_WHITE);
+	//wbkgd(manageScreen.win, riverd.ncurses.types.COLOR_PAIR(1));
+
 	auto path = settings.dir[highlight] ~ ".json";
 	path = path[1 .. $];
 
@@ -81,7 +85,7 @@ bool manage(ref Mywindow manageScreen, string[] titles, ref Settings settings, i
 		string blank;
 		blank.length = 78;
 
-		string single;
+		string info;
 
 		string parse = "{ \"name\":\"\",
 							\"id_imdb\":0,
@@ -111,35 +115,30 @@ bool manage(ref Mywindow manageScreen, string[] titles, ref Settings settings, i
 		{
 			j["AnimeDetails"].array ~= parseJSON(parse);
 
-			mvwprintw(manageScreen.win, 3, 24, toStringz(blank));
-			mvwprintw(manageScreen.win, 6, 24, toStringz(blank));
-			mvwprintw(manageScreen.win, 9, 24, toStringz(blank));
-			mvwprintw(manageScreen.win, 12, 24, toStringz(blank));
-			mvwprintw(manageScreen.win, 15, 24, toStringz(blank));
-			mvwprintw(manageScreen.win, 18, 24, toStringz(blank));
+			mvwprintw(manageScreen.win, 3, 22, toStringz(blank));
+			mvwprintw(manageScreen.win, 6, 22, toStringz(blank));
+			mvwprintw(manageScreen.win, 9, 22, toStringz(blank));
+			mvwprintw(manageScreen.win, 12, 22, toStringz(blank));
+			mvwprintw(manageScreen.win, 15, 22, toStringz(blank));
+			mvwprintw(manageScreen.win, 18, 22, toStringz(blank));
 
-			mvwprintw(manageScreen.win, 3, 24, toStringz(title));
+			mvwprintw(manageScreen.win, 3, 22, toStringz(title));
 			wrefresh(manageScreen.win);
 
-			wmove(manageScreen.win, 6, 24);
-			single = getstring(manageScreen.win);
-			j["AnimeDetails"].array[$ - 1]["seasons"].array[$ - 1]["manageScreen"].integer = to!(int)(single);
+			info = getnumstring(manageScreen.win, 6, 22, blank);
+			j["AnimeDetails"].array[$ - 1]["seasons"].array[$ - 1]["manageScreen"].integer = to!(int)(info);
 
-			wmove(manageScreen.win, 9, 24);
-			single = getstring(manageScreen.win);
-			j["AnimeDetails"].array[$ - 1]["seasons"].array[$ - 1]["season_name"].str = single;
+			info = getstring(manageScreen.win, 9, 22);
+			j["AnimeDetails"].array[$ - 1]["seasons"].array[$ - 1]["season_name"].str = info;
 
-			wmove(manageScreen.win, 12, 24);
-			single = getstring(manageScreen.win);
-			j["AnimeDetails"].array[$ - 1]["seasons"].array[$ - 1]["episodes"].integer = to!(int)(single);
+			info = getnumstring(manageScreen.win, 12, 22, blank);
+			j["AnimeDetails"].array[$ - 1]["seasons"].array[$ - 1]["episodes"].integer = to!(int)(info);
 
-			wmove(manageScreen.win, 15, 24);
-			single = getstring(manageScreen.win);
-			j["AnimeDetails"].array[$ - 1]["seasons"].array[$ - 1]["status"].str = single;
+			info = getstring(manageScreen.win, 15, 22);
+			j["AnimeDetails"].array[$ - 1]["seasons"].array[$ - 1]["status"].str = info;
 
-			wmove(manageScreen.win, 18, 24);
-			single = getstring(manageScreen.win);
-			j["AnimeDetails"].array[$ - 1]["seasons"].array[$ - 1]["cur_episode"].integer = to!(int)(single);
+			info = getnumstring(manageScreen.win, 18, 22, blank);
+			j["AnimeDetails"].array[$ - 1]["seasons"].array[$ - 1]["cur_episode"].integer = to!(int)(info);
 
 			j["AnimeDetails"].array[$ - 1]["name"].str = title;
 		}
