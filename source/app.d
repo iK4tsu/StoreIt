@@ -13,6 +13,9 @@ import source.functions;
 import source.settings;
 import source.manageTitles;
 
+enum ENTER = 10;
+enum ESC = 27;
+
 void main()
 {
 	/* initialize ncurses */

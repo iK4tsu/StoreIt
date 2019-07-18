@@ -184,16 +184,53 @@ string mainOptions(ref Mywindow win, ref Mywindow secondScreen, ref Mywindow tit
 	return sChoices[secondScreen.highlight];
 }
 
-string getstring(WINDOW* win)
+string getstring(WINDOW* win, int y, int x)
 {
 	import std.conv : to;
 	import std.string : chomp;
 	import std.array : split;
 
-	char[80] c;
+	char[78] c;
+
+	wmove(win, y, x);
 
 	wgetstr(win, c.ptr);
 	string s = to!(string)(c);
 
 	return (s.chomp().split("\0"))[0];
+}
+
+string getnumstring(WINDOW* win, int y, int x, string blank)
+{
+	import std.conv : to;
+	import std.string : chomp;
+	import std.array : split;
+	import std.uni : isNumber;
+
+	char[78] c;
+	bool _isNumber;
+
+	string s;
+
+	do {
+		wmove(win, y, x);
+
+		wgetstr(win, c.ptr);
+		s = to!(string)(c);
+
+		s = (s.chomp.split("\0"))[0];
+
+		for (int i; i < s.length; i++)
+		{
+			if (!s[i].isNumber)
+			{
+				_isNumber = false;
+				mvwprintw(win, y, x, toStringz(blank));
+				break;
+			}
+			_isNumber = true;
+		}
+	} while (!_isNumber);
+
+	return s;
 }
