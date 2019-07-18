@@ -183,3 +183,17 @@ string mainOptions(ref Mywindow win, ref Mywindow secondScreen, ref Mywindow tit
 	//}
 	return sChoices[secondScreen.highlight];
 }
+
+string getstring(WINDOW* win)
+{
+	import std.conv : to;
+	import std.string : chomp;
+	import std.array : split;
+
+	char[80] c;
+
+	wgetstr(win, c.ptr);
+	string s = to!(string)(c);
+
+	return (s.chomp().split("\0"))[0];
+}
