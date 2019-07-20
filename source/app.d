@@ -62,16 +62,16 @@ void main()
 	endwin();
 
 	// testing
-	import std.stdio : writeln;
-	import std.json;
-	string s = to!(string)(read("./source/animes.json"));
-	JSONValue j = parseJSON(s);
-
-	writeln(j["AnimeDetails"].array);
-	JSONValue jj = parseJSON(j["AnimeDetails"].toString);
-
-	writeln("NAME: ", jj[0]["name"].str);
-	writeln(jj[0]["seasons"][0]["season"].integer);
+	//import std.stdio : writeln;
+	//import std.json;
+	//string s = to!(string)(read("./source/animes.json"));
+	//JSONValue j = parseJSON(s);
+//
+	//writeln(j["AnimeDetails"].array);
+	//JSONValue jj = parseJSON(j["AnimeDetails"].toString);
+//
+	//writeln("NAME: ", jj[0]["name"].str);
+	//writeln(jj[0]["seasons"][0]["season"].integer);
 
 	return;
 }
