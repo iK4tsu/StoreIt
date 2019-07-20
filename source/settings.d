@@ -2,6 +2,7 @@ module source.settings;
 
 import std.file : exists, mkdir;
 import std.process : environment;
+import std.conv : to;
 
 struct Settings
 {
@@ -14,9 +15,9 @@ Settings defaultSettings()
 	Settings op;
 
 	/* home path: "/home/whoami" */
-	immutable auto home = environment.get("HOME");
+	immutable string home = to!(string)(environment.get("pwd"));
 
-	op.files = home ~ "/my-stuff/animeList/files";
+	op.files = home ~ "/files";
 	if (!op.files.exists())
 	{
 		mkdir(op.files);
