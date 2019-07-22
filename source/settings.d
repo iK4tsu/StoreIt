@@ -1,6 +1,6 @@
 module source.settings;
 
-import std.file : exists, mkdir;
+import std.file : exists, mkdir, getcwd;
 import std.process : environment;
 import std.conv : to;
 
@@ -15,7 +15,7 @@ Settings defaultSettings()
 	Settings op;
 
 	/* home path: "/home/whoami" */
-	immutable string home = to!(string)(environment.get("pwd"));
+	immutable string home = getcwd();
 
 	op.files = home ~ "/files";
 	if (!op.files.exists())
