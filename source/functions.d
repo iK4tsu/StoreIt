@@ -3,9 +3,11 @@ module source.functions;
 import riverd.ncurses;
 import std.string : toStringz;
 import std.process : environment;
+import std.conv : to;
 
 import source.titlesMenu;
 import source.list;
+import source.settings;
 
 /* write a sentence in the middle of a given line */
 void mvwprintcentery(WINDOW* win, int width, int line, string msg)
@@ -57,25 +59,26 @@ void newBox(WINDOW* win, int boxY, int boxX)
 }
 
 
-string mainOptions(ref Mywindow win, ref Mywindow secondScreen, ref Mywindow titleScreen)
+string mainOptions(ref Mywindow win, ref Mywindow secondScreen, ref Mywindow titleScreen, ref Settings settings)
 {
 	/* print in the midle of the first line of welcome menu */
 	mvwprintcentery(win.win, win.width, 1, "Welcome to your own video organizer!");
 	refresh();
 	wrefresh(win.win);
 
-	string[4] vChoices = ["Animes", "Series", "Movies", "Exit"];
+	string[] categories = settings.categories;
+	categories ~= "Exit";
 
 	menu1:
 	while (true)
 	{
-		for (int i = 0; i < vChoices.length; i++)
+		for (int i = 0; i < categories.length; i++)
 		{
 			/* enable background highlight for the selected option */
 			if (i == win.highlight)
 				wattron(win.win, WA_REVERSE);
 
-			mvwprintw(win.win, i + 2, 1, toStringz(vChoices[i]));
+			mvwprintw(win.win, i + 2, 1, toStringz(categories[i]));
 			wmove(win.win, win.highlight + 2, 0);
 
 			wattroff(win.win, WA_REVERSE);
@@ -101,8 +104,8 @@ string mainOptions(ref Mywindow win, ref Mywindow secondScreen, ref Mywindow tit
 				break;
 			case KEY_DOWN:
 				win.highlight++;
-				if (win.highlight > vChoices.length - 1)
-					win.highlight = vChoices.length - 1;
+				if (win.highlight > to!(int)(categories.length - 1))
+					win.highlight = to!(int)(categories.length - 1);
 				break;
 			default:
 		}
