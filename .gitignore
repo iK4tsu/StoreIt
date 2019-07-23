@@ -20,7 +20,8 @@ docs.json
 __dummy.html
 docs/
 dub.selections.json
-animes.json
+Animes.json
+settings.json
 
 # Code coverage
 *.lst
