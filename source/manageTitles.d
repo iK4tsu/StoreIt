@@ -45,8 +45,7 @@ bool manage(ref Mywindow manageScreen, string[] titles, ref Settings settings, i
 	//init_pair(1, COLOR_BLUE, COLOR_WHITE);
 	//wbkgd(manageScreen.win, riverd.ncurses.types.COLOR_PAIR(1));
 
-	auto path = settings.dir[highlight] ~ ".json";
-	path = path[1 .. $];
+	auto path = settings.categories[highlight] ~ ".json";
 
 	JSONValue j;
 

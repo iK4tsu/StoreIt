@@ -25,7 +25,7 @@ void main()
 
 	/* TODO */
 	/* system to store ones options */
-	Settings settings = defaultSettings();
+	Settings settings = readSettings();
 
 	/* all windows */
 	int stdscrY, stdscrX;
@@ -41,7 +41,7 @@ void main()
 
 	do {
 		newBox(mainScreen.win, 0, 0);
-		string option = mainOptions(mainScreen, secondScreen, titleScreen);
+		string option = mainOptions(mainScreen, secondScreen, titleScreen, settings);
 
 		/* ends program */
 		if (cmp(option, "exit") == 0)
