@@ -129,8 +129,8 @@ string mainOptions(ref Mywindow win, ref Mywindow secondScreen, ref Mywindow tit
 
 		secondScreen.choice = wgetch(secondScreen.win);
 
-		/* check if the pressed key is ENTER */
-		if (secondScreen.choice == 10 && secondScreen.highlight == 3)
+		/* check if the pressed key is ENTER or ESC */
+		if (secondScreen.choice == 27 || (secondScreen.choice == 10 && secondScreen.highlight == 3))
 		{
 			werase(secondScreen.win);
 			wrefresh(secondScreen.win);
