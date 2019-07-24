@@ -12,16 +12,11 @@ import source.list;
 import source.functions;
 import source.settings;
 import source.manageTitles;
-
-enum ENTER = 10;
-enum ESC = 27;
+import source.draw;
 
 void main()
 {
-	/* initialize ncurses */
-	initscr();
-	noecho();
-	cbreak();
+	initCurses();
 
 	/* TODO */
 	/* system to store ones options */
