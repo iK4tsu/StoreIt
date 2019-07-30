@@ -22,6 +22,7 @@ docs/
 dub.selections.json
 Animes.json
 settings.json
+dscanner.ini
 
 # Code coverage
 *.lst
