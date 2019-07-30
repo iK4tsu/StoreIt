@@ -15,6 +15,7 @@
 
 	"dependencies": {
 		"silly": "~>0.8.2",
-		"riverd-ncurses": "~>1.0.4"
+		"riverd-ncurses": "~>1.0.4",
+		"d2sqlite3": "~>0.18.2"
 	}
 }
