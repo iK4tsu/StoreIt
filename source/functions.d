@@ -8,6 +8,8 @@ import std.conv : to;
 import source.titlesMenu;
 import source.list;
 import source.settings;
+import source.aliasLocal : KEY;
+import source.draw : drawmainmenu, drawHomeScreen, drawbarstd, updatebarstd;
 
 /* write a sentence in the middle of a given line */
 void mvwprintcentery(WINDOW* win, int width, int line, string msg)
@@ -16,11 +18,40 @@ void mvwprintcentery(WINDOW* win, int width, int line, string msg)
 	mvwprintw(win, line, center, toStringz(msg));
 }
 
+/* write n characters in a given position horizontally */
+void mvaddnchh(int y, int x, int chtype, int n)
+{
+	mvwaddnchh(stdscr, y, x, chtype, n);
+}
+
+void mvwaddnchh(WINDOW* win, int y, int x, int chtype, int n)
+{
+	for (int i = x; i < x + n; i++)
+	{
+		mvwaddch(win, y, i, chtype);
+	}
+}
+
+/* write n characters in a given starting position vertically */
+void mvaddnchv(int y, int x, int chtype, int n)
+{
+	mvwaddnchv(stdscr, y, x, chtype, n);
+}
+
+
+void mvwaddnchv(WINDOW* win, int y, int x, int chtype, int n)
+{
+	for (int i = y; i < y + n; i++)
+	{
+		mvwaddch(win, i, x, chtype);
+	}
+}
+
 
 struct Mywindow
 {
-	int yMax;
-	int xMax;
+	int yVert;
+	int xVert;
 
 	int height;
 	int width;
@@ -39,6 +70,10 @@ Mywindow newWindow(int height, int width, int yVert, int xVert, bool keyPad)
 	/* new windown dimensions */
 	newwindow.height = height;
 	newwindow.width = width;
+
+	/* new window position */
+	newwindow.yVert = yVert;
+	newwindow.xVert = xVert;
 
 	/* creates a new invisible window */
 	newwindow.win = newwin(newwindow.height, newwindow.width, yVert, xVert);
@@ -236,4 +271,30 @@ string getnumstring(WINDOW* win, int y, int x, string blank)
 	} while (!_isNumber);
 
 	return s;
+}
+
+
+string homewindow(ref WINDOW* mainmenu, ref int mainop, ref Settings settings, WINDOW* bar)
+{
+	int key;
+	while (true)
+	{
+		switch (mainop = getch())
+		{
+			case KEY_F(1):
+				if (key != KEY_F(1))
+				{
+					drawbarstd(bar);
+					updatebarstd(bar, 1);
+					drawmainmenu(mainmenu, settings);
+					
+				}
+				break;
+			case KEY.ESC:
+				return "exit";
+			default:
+				drawHomeScreen(bar);
+		}
+		key = mainop;
+	}
 }
