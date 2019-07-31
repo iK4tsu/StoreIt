@@ -216,10 +216,19 @@ string mainWindow(ref Mywindow main, ref Mywindow bar, ref Mywindow tltop, ref S
 				updatemainmenu(main.win, main.highlight);
 				break;
 			case KEY.ENTER:
+				if (main.highlight < 1)
+				{
+					main.highlight = 1;
+					updatemainmenu(main.win, main.highlight);
+				}
 				drawtitleopmenu(tltop.win, main.highlight);
 				string s = titleopWindow(main, bar, tltop, settings);
 				if (cmp(s, "return") == 0) break;
-				else return s;
+				else
+				{
+					main.highlight = 0;
+					return s;
+				}
 			default:
 				if (main.highlight < 1)
 				{
@@ -262,18 +271,30 @@ string titleopWindow(ref Mywindow main, ref Mywindow bar, ref Mywindow tltop, re
 				updatetitleopmenu(tltop.win, tltop.highlight);
 				break;
 			case KEY.ENTER:
+				if (tltop.highlight < 1)
+				{
+					tltop.highlight = 1;
+					updatemainmenu(tltop.win, tltop.highlight);
+				}
+				mvwin(tltop.win, getbegy(tltop.win) - main.highlight - 1, getbegx(tltop.win));
 				final switch (tltop.highlight)
 				{
-					case 1: return "Add";
-					case 2: return "Remove";
-					case 3: return "Finish";
+					case 1:
+						tltop.highlight = 0;
+						return "Add";
+					case 2:
+						tltop.highlight = 0;
+						return "Remove";
+					case 3:
+						tltop.highlight = 0;
+						return "Finish";
 				}
 			default:
 				if (tltop.highlight < 1)
-					{
-						tltop.highlight = 1;
-						updatemainmenu(tltop.win, tltop.highlight);
-					}
+				{
+					tltop.highlight = 1;
+					updatemainmenu(tltop.win, tltop.highlight);
+				}
 		}
 	}
 }

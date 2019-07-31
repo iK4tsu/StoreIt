@@ -84,7 +84,7 @@ string[] tmenu(ref Mywindow titleScreen, string sChoice)
 			case "\\done":
 				break;
 			default:
-				if (single[0] != '\\')
+				if (single.length > 0 && single[0] != '\\')
 				{
 					titles ~= single;
 					y++;
