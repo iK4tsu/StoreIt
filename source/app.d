@@ -45,8 +45,6 @@ void main()
 	string[] titles;
 
 	do {
-		//newBox(mainScreen.win, 0, 0);
-		//string option = mainOptions(mainScreen, secondScreen, titleScreen, settings);
 		string option = homewindow(main, bar, tltop, settings);
 
 
