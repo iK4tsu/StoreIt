@@ -17,18 +17,27 @@ import source.aliasLocal : COLOR_PAIR, PAIR;
 
 void main()
 {
-	WINDOW* barstdscr = initCurses();
-
 	/* TODO */
 	/* system to store ones options */
 	Settings settings = readSettings();
+
+
+	/* init all windows and curses itself */
+	WINDOW* barstdscr = initCurses();
+	WINDOW* mainmenu = newwin(to!(int)(2 + settings.categories.length), 20, getbegy(barstdscr) + 1, getbegx(barstdscr) + 3);
+
+
+	/* init Mywindows */
+	Mywindow bar = properties(barstdscr, true);
+	Mywindow main = properties(mainmenu, true);
+
 
 	/* all windows */
 	int stdscrY, stdscrX;
 	getmaxyx(stdscr, stdscrY, stdscrX);
 
 	
-	Mywindow mainmenu = newWindow(to!(int)(2 + settings.categories.length), 20, getbegy(barstdscr) + 1, getbegx(barstdscr) + 3, true);
+	bar.win = barstdscr;
 
 	Mywindow secondScreen = newWindow(6, stdscrX - 200, 4, 10, true);
 	Mywindow titleScreen = newWindow(stdscrY - 5, stdscrX - 5, 2, 2, true);
@@ -40,12 +49,14 @@ void main()
 	do {
 		//newBox(mainScreen.win, 0, 0);
 		//string option = mainOptions(mainScreen, secondScreen, titleScreen, settings);
-		string option = homewindow(mainmenu.win, mainmenu.choice, settings, barstdscr);
+		string option = homewindow(main, bar, settings);
 
 
 		/* ends program */
 		if (cmp(option, "exit") == 0)
 			break;
+		else if (cmp(option, "return") == 0)
+			continue;
 
 		/* titles to manage */
 		titles = tmenu(titleScreen, option);
@@ -54,7 +65,7 @@ void main()
 		if (titles.length == 0)
 			continue;
 
-		isOver = manage(manageScreen, titles, settings, mainmenu.highlight, option);
+		isOver = manage(manageScreen, titles, settings, main.highlight, option);
 	} while (!isOver);
 
 	echo();
