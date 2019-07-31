@@ -64,7 +64,7 @@ struct PAIRS
 	
 	static immutable int mainmenu = 11;			// main menu window
 	static immutable int mainmenubtn = 12;		// main menu buttons
-	static immutable int mainmenubtnhlt = 13;	// main menu button highlight
+	static immutable int mainmenubtnslct = 13;	// main menu button selection
 }
 
 /* color pair alias */
