@@ -50,6 +50,7 @@ void initCustomColors()
 	init_color(COLOR.babyblue, 400, 988, 945);
 	init_color(COLOR.bluechill, 271, 635, 620);
 	init_color(COLOR.blackpearl, 98, 125, 161);
+	init_color(COLOR.mountainmeadow, 94, 820, 482);
 }
 
 
@@ -61,6 +62,8 @@ void initColorPairs()
 	init_pair(PAIR.stdscrbtn, COLOR.babyblue, COLOR.bunker);
 	init_pair(PAIR.stdscrbtn2, COLOR.linkwater, COLOR.bunker);
 
+	init_pair(PAIR.barsuggestion, COLOR.mountainmeadow, COLOR.bunker);
+	init_pair(PAIR.barsuggestionslct, COLOR.mountainmeadow, COLOR.blackpearl);
 	init_pair(PAIR.barstdscr, COLOR.bluechill, COLOR.bunker);
 	init_pair(PAIR.barstdsmb, COLOR.babyblue, COLOR.bunker);
 	init_pair(PAIR.barstdtxt, COLOR.linkwater, COLOR.bunker);
@@ -175,11 +178,18 @@ void drawbarstd(WINDOW* win)
 
 	wattron(win, COLOR_PAIR(PAIR.barstdsmb));			// atribute on
 	mvwaddch(win, 0, 4, ACS_DIAMOND);
+	mvwaddch(win, 0, 19, ACS_DIAMOND);
 	wattroff(win, COLOR_PAIR(PAIR.barstdsmb));			// atribute off
 
 	wattron(win, COLOR_PAIR(PAIR.barstdtxt));
 	mvwaddstr(win, 0, 5, toStringz(" Menu"));
+	mvwaddstr(win, 0, 20, toStringz(" Settings"));
 	wattroff(win, COLOR_PAIR(PAIR.barstdtxt));
+
+	wattron(win, COLOR_PAIR(PAIR.barsuggestion | WA_BOLD));
+	mvwaddstr(win, 0, 10, toStringz(" <F1>"));
+	mvwaddstr(win, 0, 29, toStringz(" <F2>"));
+	wattroff(win, COLOR_PAIR(PAIR.barsuggestion | WA_BOLD));
 
 	wattroff(win, WA_BOLD);
 	
@@ -199,6 +209,23 @@ void updatebarstd(WINDOW* win, int pos)
 			wattron(win, COLOR_PAIR(PAIR.barstdtxtslct | WA_BOLD));
 			mvwaddstr(win, 0, 5, toStringz(" Menu"));
 			wattroff(win, COLOR_PAIR(PAIR.barstdtxtslct | WA_BOLD));
+
+			wattron(win, COLOR_PAIR(PAIR.barsuggestionslct | WA_BOLD));
+			mvwaddstr(win, 0, 10, toStringz(" <F1>"));
+			wattroff(win, COLOR_PAIR(PAIR.barsuggestionslct | WA_BOLD));
+			break;
+		case 2:
+			wattron(win, COLOR_PAIR(PAIR.barstdslct | WA_BOLD));
+			mvwaddch(win, 0, 19, ACS_DIAMOND);
+			wattroff(win, COLOR_PAIR(PAIR.barstdslct | WA_BOLD));
+			
+			wattron(win, COLOR_PAIR(PAIR.barstdtxtslct | WA_BOLD));
+			mvwaddstr(win, 0, 20, toStringz(" Settings"));
+			wattroff(win, COLOR_PAIR(PAIR.barstdtxtslct | WA_BOLD));
+
+			wattron(win, COLOR_PAIR(PAIR.barsuggestionslct | WA_BOLD));
+			mvwaddstr(win, 0, 29, toStringz(" <F2>"));
+			wattroff(win, COLOR_PAIR(PAIR.barsuggestionslct | WA_BOLD));
 			break;
 	}
 	wrefresh(win);
