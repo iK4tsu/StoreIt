@@ -25,21 +25,19 @@ void main()
 	/* init all windows and curses itself */
 	WINDOW* barstdscr = initCurses();
 	WINDOW* mainmenu = newwin(to!(int)(2 + settings.categories.length), 20, getbegy(barstdscr) + 1, getbegx(barstdscr) + 3);
+	WINDOW* titlesopmenu = dupwin(mainmenu);
 
 
 	/* init Mywindows */
 	Mywindow bar = properties(barstdscr, true);
 	Mywindow main = properties(mainmenu, true);
+	Mywindow tltop = properties(titlesopmenu, true);
 
 
 	/* all windows */
 	int stdscrY, stdscrX;
 	getmaxyx(stdscr, stdscrY, stdscrX);
 
-	
-	bar.win = barstdscr;
-
-	Mywindow secondScreen = newWindow(6, stdscrX - 200, 4, 10, true);
 	Mywindow titleScreen = newWindow(stdscrY - 5, stdscrX - 5, 2, 2, true);
 	Mywindow manageScreen = newWindow(stdscrY - 5, stdscrX - 5, 2, 2, true);
 
@@ -49,7 +47,7 @@ void main()
 	do {
 		//newBox(mainScreen.win, 0, 0);
 		//string option = mainOptions(mainScreen, secondScreen, titleScreen, settings);
-		string option = homewindow(main, bar, settings);
+		string option = homewindow(main, bar, tltop, settings);
 
 
 		/* ends program */

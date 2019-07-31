@@ -52,19 +52,23 @@ alias COLOR = COLORS;
 /* color pair id's */
 struct PAIRS
 {
-	static immutable int stdscr = 1;			// standard screen
-	static immutable int stdscrbtn = 2;			// standard screen buttons
-	static immutable int stdscrbtn2 = 3;		// statdard screen button color 2
-
-	static immutable int barstdscr = 6;			// main bar
-	static immutable int barstdsmb = 7;			// bar diamond symbol
-	static immutable int barstdtxt = 8;			// bar text
-	static immutable int barstdslct = 9;		// bar selection
-	static immutable int barstdtxtslct = 10;	// bar text selection
+	static immutable int stdscr = 1;                       // standard screen
+	static immutable int stdscrbtn = 2;                    // standard screen buttons
+	static immutable int stdscrbtn2 = 3;                   // statdard screen button color 2
 	
-	static immutable int mainmenu = 11;			// main menu window
-	static immutable int mainmenubtn = 12;		// main menu buttons
-	static immutable int mainmenubtnslct = 13;	// main menu button selection
+	static immutable int barstdscr = 6;                    // main bar
+	static immutable int barstdsmb = 7;                    // bar diamond symbol
+	static immutable int barstdtxt = 8;                    // bar text
+	static immutable int barstdslct = 9;                   // bar selection
+	static immutable int barstdtxtslct = 10;               // bar text selection
+	
+	static immutable int mainmenu = 11;                    // main menu window
+	static immutable int mainmenutxt = 12;                 // main menu text
+	static immutable int mainmenubtnslct = 13;             // main menu button selection
+
+	static immutable int titlesopmenu = 16;                // option menu to add, remove, finish
+	static immutable int titlesopmenutxt = 17;             // option menu text
+	static immutable int titlesopmenubtnslct = 18;         // option menu button selection
 }
 
 /* color pair alias */

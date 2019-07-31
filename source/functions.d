@@ -4,12 +4,13 @@ import riverd.ncurses;
 import std.string : toStringz;
 import std.process : environment;
 import std.conv : to;
+import std.algorithm : cmp;
 
 import source.titlesMenu;
 import source.list;
 import source.settings;
 import source.aliasLocal : KEY;
-import source.draw : drawmainmenu, drawHomeScreen, drawbarstd, updatebarstd, updatemainmenu;
+import source.draw : drawmainmenu, drawHomeScreen, drawbarstd, updatebarstd, updatemainmenu, drawtitleopmenu, updatetitleopmenu;
 
 /* write a sentence in the middle of a given line */
 void mvwprintcentery(WINDOW* win, int width, int line, string msg)
@@ -291,7 +292,7 @@ string getnumstring(WINDOW* win, int y, int x, string blank)
 }
 
 
-string homewindow(ref Mywindow main, ref Mywindow bar, ref Settings settings)
+string homewindow(ref Mywindow main, ref Mywindow bar, ref Mywindow tltop, ref Settings settings)
 {
 	int key;
 	while (true)
@@ -301,32 +302,32 @@ string homewindow(ref Mywindow main, ref Mywindow bar, ref Settings settings)
 			case KEY_F(1):
 				if (bar.choice != KEY_F(1))
 				{
+					bar.choice = 1;
 					drawbarstd(bar.win);
-					updatebarstd(bar.win, 1);
+					updatebarstd(bar.win, bar.choice);
 					drawmainmenu(main.win, settings);
-					return mainWindow(main, bar.win, settings);
+					return mainWindow(main, bar, tltop, settings);
 				}
 				break;
 			case KEY.ESC:
 				return "exit";
 			default:
-				drawHomeScreen(bar.win);
+				//drawHomeScreen(bar.win);
 		}
 		bar.choice = key;
 	}
 }
 
 
-string mainWindow(ref Mywindow main, ref WINDOW* bar, ref Settings settings)
+string mainWindow(ref Mywindow main, ref Mywindow bar, ref Mywindow tltop, ref Settings settings)
 {
-	int key;
 	while (true)
 	{
 		switch (main.choice = getch())
 		{
 			case KEY.ESC:
 				main.highlight = 0;
-				drawHomeScreen(bar);
+				drawHomeScreen(bar.win);
 				return "return";
 			case KEY_DOWN:
 				main.highlight++;
@@ -343,8 +344,57 @@ string mainWindow(ref Mywindow main, ref WINDOW* bar, ref Settings settings)
 				updatemainmenu(main.win, main.highlight);
 				break;
 			case KEY.ENTER:
+				drawtitleopmenu(tltop.win, main.highlight);
+				string s = titleopWindow(main, bar, tltop, settings);
+				if (cmp(s, "return") == 0) break;
+				else return s;
+			default:
+				if (main.highlight < 1)
+				{
+					main.highlight = 1;
+					updatemainmenu(main.win, main.highlight);
+				}
+		}
+	}
+}
+
+
+string titleopWindow(ref Mywindow main, ref Mywindow bar, ref Mywindow tltop, ref Settings settings)
+{
+	while (true)
+	{
+		switch (tltop.choice = getch())
+		{
+			case KEY.ESC:
+				tltop.highlight = 0;
+				mvwin(tltop.win, getbegy(tltop.win) - main.highlight - 1, getbegx(tltop.win));
+				drawHomeScreen(bar.win);
+				updatebarstd(bar.win, bar.choice);
+				drawmainmenu(main.win, settings, false);
+				updatemainmenu(main.win, main.highlight);
+				return "return";
+			case KEY_DOWN:
+				tltop.highlight++;
+				if (tltop.highlight > getmaxy(tltop.win) - 2)
+					tltop.highlight = getmaxy(tltop.win) - 2;
+				mvwin(tltop.win, getbegy(tltop.win) - main.highlight - 1, getbegx(tltop.win));
+				drawtitleopmenu(tltop.win, main.highlight, false);
+				updatetitleopmenu(tltop.win, tltop.highlight);
+				break;
+			case KEY_UP:
+				tltop.highlight--;
+				if (tltop.highlight < 1)
+					tltop.highlight = 1;
+				mvwin(tltop.win, getbegy(tltop.win) - main.highlight - 1, getbegx(tltop.win));
+				drawtitleopmenu(tltop.win, main.highlight, false);
+				updatetitleopmenu(tltop.win, tltop.highlight);
 				break;
 			default:
+				if (tltop.highlight < 1)
+					{
+						tltop.highlight = 1;
+						updatemainmenu(tltop.win, tltop.highlight);
+					}
 		}
 	}
 }
