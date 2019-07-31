@@ -9,7 +9,7 @@ import source.titlesMenu;
 import source.list;
 import source.settings;
 import source.aliasLocal : KEY;
-import source.draw : drawmainmenu, drawHomeScreen, drawbarstd, updatebarstd;
+import source.draw : drawmainmenu, drawHomeScreen, drawbarstd, updatebarstd, updatemainmenu;
 
 /* write a sentence in the middle of a given line */
 void mvwprintcentery(WINDOW* win, int width, int line, string msg)
@@ -95,7 +95,7 @@ Mywindow properties(ref WINDOW* win, bool keyPad)
 	ret.yVert = getbegy(win);
 	ret.xVert = getbegx(win);
 
-	keyPad(win, keyPad);                    // ability to use keys
+	keypad(win, keyPad);                    // ability to use keys
 
 	return ret;
 }
@@ -291,33 +291,60 @@ string getnumstring(WINDOW* win, int y, int x, string blank)
 }
 
 
-string homewindow(WINDOW* mainmenu, ref int mainop, WINDOW* bar, ref int homeop, ref Settings settings)
+string homewindow(ref Mywindow main, ref Mywindow bar, ref Settings settings)
 {
 	int key;
 	while (true)
 	{
-		switch (homeop = getch())
+		switch (key = getch())
 		{
 			case KEY_F(1):
-				if (key != KEY_F(1))
+				if (bar.choice != KEY_F(1))
 				{
-					drawbarstd(bar);
-					updatebarstd(bar, 1);
-					drawmainmenu(mainmenu, settings);
-					
+					drawbarstd(bar.win);
+					updatebarstd(bar.win, 1);
+					drawmainmenu(main.win, settings);
+					return mainWindow(main, bar.win, settings);
 				}
 				break;
 			case KEY.ESC:
 				return "exit";
 			default:
-				drawHomeScreen(bar);
+				drawHomeScreen(bar.win);
 		}
-		key = homeop;
+		bar.choice = key;
 	}
 }
 
 
-string mainmenu(WINDOW* mainmenu, ref int mainop)
+string mainWindow(ref Mywindow main, ref WINDOW* bar, ref Settings settings)
 {
-
+	int key;
+	while (true)
+	{
+		switch (main.choice = getch())
+		{
+			case KEY.ESC:
+				main.highlight = 0;
+				drawHomeScreen(bar);
+				return "return";
+			case KEY_DOWN:
+				main.highlight++;
+				if (main.highlight > getmaxy(main.win) - 2)
+					main.highlight = getmaxy(main.win) - 2;
+				drawmainmenu(main.win, settings, false);
+				updatemainmenu(main.win, main.highlight);
+				break;
+			case KEY_UP:
+				main.highlight--;
+				if (main.highlight < 1)
+					main.highlight = 1;
+				drawmainmenu(main.win, settings, false);
+				updatemainmenu(main.win, main.highlight);
+				break;
+			case KEY.ENTER:
+				break;
+			default:
+		}
+	}
 }
