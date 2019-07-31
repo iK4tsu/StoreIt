@@ -84,6 +84,23 @@ Mywindow newWindow(int height, int width, int yVert, int xVert, bool keyPad)
 	return newwindow;
 }
 
+
+Mywindow properties(ref WINDOW* win, bool keyPad)
+{
+	Mywindow ret;
+
+	ret.win = win;
+	ret.height = getmaxy(win);
+	ret.width = getmaxx(win);
+	ret.yVert = getbegy(win);
+	ret.xVert = getbegx(win);
+
+	keyPad(win, keyPad);                    // ability to use keys
+
+	return ret;
+}
+
+
 void newBox(WINDOW* win, int boxY, int boxX)
 {
 	/* draws a box arround the perimeter of the window */
@@ -94,7 +111,7 @@ void newBox(WINDOW* win, int boxY, int boxX)
 }
 
 
-string mainOptions(ref Mywindow win, ref Mywindow secondScreen, ref Mywindow titleScreen, ref Settings settings)
+string homeoptions(ref Mywindow win, ref Mywindow secondScreen, ref Mywindow titleScreen, ref Settings settings)
 {
 	/* print in the midle of the first line of welcome menu */
 	mvwprintcentery(win.win, win.width, 1, "Welcome to your own video organizer!");
@@ -274,12 +291,12 @@ string getnumstring(WINDOW* win, int y, int x, string blank)
 }
 
 
-string homewindow(ref WINDOW* mainmenu, ref int mainop, ref Settings settings, WINDOW* bar)
+string homewindow(WINDOW* mainmenu, ref int mainop, WINDOW* bar, ref int homeop, ref Settings settings)
 {
 	int key;
 	while (true)
 	{
-		switch (mainop = getch())
+		switch (homeop = getch())
 		{
 			case KEY_F(1):
 				if (key != KEY_F(1))
@@ -295,6 +312,12 @@ string homewindow(ref WINDOW* mainmenu, ref int mainop, ref Settings settings, W
 			default:
 				drawHomeScreen(bar);
 		}
-		key = mainop;
+		key = homeop;
 	}
+}
+
+
+string mainmenu(WINDOW* mainmenu, ref int mainop)
+{
+
 }
