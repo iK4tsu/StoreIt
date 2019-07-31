@@ -244,21 +244,21 @@ void drawmainmenu(WINDOW* win, Settings settings, bool animation = true)
 
 	foreach(i, string cat; settings.categories)
 	{
-		if (animation)
+		if (animation)                                                     // drop down animetion
 		{
 			wattron(win, COLOR_PAIR(PAIR.mainmenu));
 			mvwhline(win, to!(int)(i + 1), 0, '=', getmaxx(win));          // animation bottom side
 			wrefresh(win);
 			delay_output(50);
 			wattron(win, COLOR_PAIR(PAIR.mainmenutxt) | WA_BOLD);
+			mvwaddnchh(win, to!(int)(i + 1), 0, ' ', getmaxx(win));        // clean current line
 		}
-		mvwaddnchh(win, to!(int)(i + 1), 0, ' ', getmaxx(win));
-		mvwaddch(win, to!(int)(i + 1), 1, ACS_BULLET);
-		mvwaddstr(win, to!(int)(i + 1), 3, toStringz(cat));
+		mvwaddch(win, to!(int)(i + 1), 1, ACS_BULLET);                     // button
+		mvwaddstr(win, to!(int)(i + 1), 3, toStringz(cat));                // category
 	}
 
 	wattron(win, COLOR_PAIR(PAIR.mainmenu));
-	mvwhline(win, getmaxy(win) - 1, 0, '=', getmaxx(win));
+	mvwhline(win, getmaxy(win) - 1, 0, '=', getmaxx(win));                 // bottom side
 	wattroff(win, COLOR_PAIR(PAIR.mainmenu));
 
 	wattroff(win, WA_BOLD);
@@ -277,6 +277,7 @@ void updatemainmenu(WINDOW* win, int pos)
 }
 
 
+/* drop down menu */
 void drawtitleopmenu(WINDOW* win, int pos, bool animation = true)
 {
 	werase(win);
@@ -290,21 +291,21 @@ void drawtitleopmenu(WINDOW* win, int pos, bool animation = true)
 
 	foreach(i, string cat; op)
 	{
-		if (animation)
+		if (animation)                                                     // drop down animetion
 		{
 			wattron(win, COLOR_PAIR(PAIR.titlesopmenu));
 			mvwhline(win, to!(int)(i + 1), 0, '=', getmaxx(win));          // animation bottom side
 			wrefresh(win);
 			delay_output(50);
 			wattron(win, COLOR_PAIR(PAIR.titlesopmenutxt) | WA_BOLD);
+			mvwaddnchh(win, to!(int)(i + 1), 0, ' ', getmaxx(win));        // clean current line
 		}
-		mvwaddnchh(win, to!(int)(i + 1), 0, ' ', getmaxx(win));
-		mvwaddch(win, to!(int)(i + 1), 1, ACS_BULLET);
-		mvwaddstr(win, to!(int)(i + 1), 3, toStringz(cat));
+		mvwaddch(win, to!(int)(i + 1), 1, ACS_BULLET);                     // button
+		mvwaddstr(win, to!(int)(i + 1), 3, toStringz(cat));                // category
 	}
 
 	wattron(win, COLOR_PAIR(PAIR.titlesopmenu));
-	mvwhline(win, getmaxy(win) - 1, 0, '=', getmaxx(win));
+	mvwhline(win, getmaxy(win) - 1, 0, '=', getmaxx(win));                 // bottom side
 	wattroff(win, COLOR_PAIR(PAIR.titlesopmenu));
 
 	wattroff(win, WA_BOLD);
