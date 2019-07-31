@@ -295,6 +295,7 @@ string getnumstring(WINDOW* win, int y, int x, string blank)
 string homewindow(ref Mywindow main, ref Mywindow bar, ref Mywindow tltop, ref Settings settings)
 {
 	int key;
+	drawHomeScreen(bar.win);
 	while (true)
 	{
 		switch (key = getch())
@@ -312,7 +313,6 @@ string homewindow(ref Mywindow main, ref Mywindow bar, ref Mywindow tltop, ref S
 			case KEY.ESC:
 				return "exit";
 			default:
-				//drawHomeScreen(bar.win);
 		}
 		bar.choice = key;
 	}
@@ -389,6 +389,13 @@ string titleopWindow(ref Mywindow main, ref Mywindow bar, ref Mywindow tltop, re
 				drawtitleopmenu(tltop.win, main.highlight, false);
 				updatetitleopmenu(tltop.win, tltop.highlight);
 				break;
+			case KEY.ENTER:
+				final switch (tltop.highlight)
+				{
+					case 1: return "Add";
+					case 2: return "Remove";
+					case 3: return "Finish";
+				}
 			default:
 				if (tltop.highlight < 1)
 					{
