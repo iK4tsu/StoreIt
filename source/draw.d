@@ -67,6 +67,7 @@ void initColorPairs()
 	init_pair(PAIR.barstdtxtslct, COLOR.linkwater, COLOR.blackpearl);
 
 	init_pair(PAIR.mainmenu, COLOR.linkwater, COLOR.bunker);
+	init_pair(PAIR.mainmenubtnslct, COLOR.cardinal, COLOR.bunker);
 
 	//init_pair(10, COLOR.tyrianpurple, COLOR_BLACK);
 	//init_pair(11, COLOR.cardinal, COLOR_BLACK);
@@ -202,7 +203,7 @@ void updatebarstd(WINDOW* win, int pos)
 
 
 /* drop down menu */
-void drawmainmenu(WINDOW* win, Settings settings)
+void drawmainmenu(WINDOW* win, Settings settings, bool animation = true)
 {
 	werase(win);
 
@@ -210,18 +211,21 @@ void drawmainmenu(WINDOW* win, Settings settings)
 	wbkgd(win, COLOR_PAIR(PAIR.mainmenu));
 
 	wattron(win, COLOR_PAIR(PAIR.barstdscr));
-	mvwhline(win, 0, 0, '=', getmaxx(win));
+	mvwhline(win, 0, 0, '=', getmaxx(win));                            // upper side
 	wattroff(win, COLOR_PAIR(PAIR.barstdscr));
 
 	wattron(win, COLOR_PAIR(PAIR.mainmenu) | WA_BOLD);
 
 	foreach(i, string cat; settings.categories)
 	{
-		wattron(win, COLOR_PAIR(PAIR.barstdscr));
-		mvwhline(win, to!(int)(i + 1), 0, '=', getmaxx(win));
-		wrefresh(win);
-		delay_output(50);
-		wattron(win, COLOR_PAIR(PAIR.mainmenu) | WA_BOLD);
+		if (animation)
+		{
+			wattron(win, COLOR_PAIR(PAIR.barstdscr));
+			mvwhline(win, to!(int)(i + 1), 0, '=', getmaxx(win));          // animation bottom side
+			wrefresh(win);
+			delay_output(50);
+			wattron(win, COLOR_PAIR(PAIR.mainmenu) | WA_BOLD);
+		}
 		mvwaddnchh(win, to!(int)(i + 1), 0, ' ', getmaxx(win));
 		mvwaddch(win, to!(int)(i + 1), 1, ACS_BULLET);
 		mvwaddstr(win, to!(int)(i + 1), 3, toStringz(cat));
@@ -236,25 +240,12 @@ void drawmainmenu(WINDOW* win, Settings settings)
 	wrefresh(win);
 }
 
-void mainWinShadowWin(ref WINDOW* main, ref WINDOW* shadow)
+
+void updatemainmenu(WINDOW* win, int pos)
 {
-	wbkgd(shadow, COLOR_PAIR(10));
-	wattron(shadow, COLOR_PAIR(11));
+	wattron(win, COLOR_PAIR(PAIR.mainmenubtnslct | WA_BOLD));
+	mvwaddch(win, pos, 1, ACS_DIAMOND);
+	wattroff(win, COLOR_PAIR(PAIR.mainmenubtnslct | WA_BOLD));
 
-	import std.conv : to;
-	for (int i = 0; i < getmaxy(shadow); i++)
-	{
-		for (int j = 0; j < getmaxx(shadow); j++)
-		{
-			mvwaddnstr(shadow, i, j, toStringz("."), getmaxx(shadow));
-		}
-	}
-
-	wattroff(shadow, COLOR_PAIR(11));
-	wbkgd(main, COLOR_PAIR(PAIR.mainmenu));
-	box(main, 0, 0);
-
-	refresh();
-	wrefresh(shadow);
-	wrefresh(main);
+	wrefresh(win);
 }

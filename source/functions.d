@@ -9,7 +9,7 @@ import source.titlesMenu;
 import source.list;
 import source.settings;
 import source.aliasLocal : KEY;
-import source.draw : drawmainmenu, drawHomeScreen, drawbarstd, updatebarstd;
+import source.draw : drawmainmenu, drawHomeScreen, drawbarstd, updatebarstd, updatemainmenu;
 
 /* write a sentence in the middle of a given line */
 void mvwprintcentery(WINDOW* win, int width, int line, string msg)
@@ -84,6 +84,23 @@ Mywindow newWindow(int height, int width, int yVert, int xVert, bool keyPad)
 	return newwindow;
 }
 
+
+Mywindow properties(ref WINDOW* win, bool keyPad)
+{
+	Mywindow ret;
+
+	ret.win = win;
+	ret.height = getmaxy(win);
+	ret.width = getmaxx(win);
+	ret.yVert = getbegy(win);
+	ret.xVert = getbegx(win);
+
+	keypad(win, keyPad);                    // ability to use keys
+
+	return ret;
+}
+
+
 void newBox(WINDOW* win, int boxY, int boxX)
 {
 	/* draws a box arround the perimeter of the window */
@@ -94,7 +111,7 @@ void newBox(WINDOW* win, int boxY, int boxX)
 }
 
 
-string mainOptions(ref Mywindow win, ref Mywindow secondScreen, ref Mywindow titleScreen, ref Settings settings)
+string homeoptions(ref Mywindow win, ref Mywindow secondScreen, ref Mywindow titleScreen, ref Settings settings)
 {
 	/* print in the midle of the first line of welcome menu */
 	mvwprintcentery(win.win, win.width, 1, "Welcome to your own video organizer!");
@@ -274,27 +291,60 @@ string getnumstring(WINDOW* win, int y, int x, string blank)
 }
 
 
-string homewindow(ref WINDOW* mainmenu, ref int mainop, ref Settings settings, WINDOW* bar)
+string homewindow(ref Mywindow main, ref Mywindow bar, ref Settings settings)
 {
 	int key;
 	while (true)
 	{
-		switch (mainop = getch())
+		switch (key = getch())
 		{
 			case KEY_F(1):
-				if (key != KEY_F(1))
+				if (bar.choice != KEY_F(1))
 				{
-					drawbarstd(bar);
-					updatebarstd(bar, 1);
-					drawmainmenu(mainmenu, settings);
-					
+					drawbarstd(bar.win);
+					updatebarstd(bar.win, 1);
+					drawmainmenu(main.win, settings);
+					return mainWindow(main, bar.win, settings);
 				}
 				break;
 			case KEY.ESC:
 				return "exit";
 			default:
-				drawHomeScreen(bar);
+				drawHomeScreen(bar.win);
 		}
-		key = mainop;
+		bar.choice = key;
+	}
+}
+
+
+string mainWindow(ref Mywindow main, ref WINDOW* bar, ref Settings settings)
+{
+	int key;
+	while (true)
+	{
+		switch (main.choice = getch())
+		{
+			case KEY.ESC:
+				main.highlight = 0;
+				drawHomeScreen(bar);
+				return "return";
+			case KEY_DOWN:
+				main.highlight++;
+				if (main.highlight > getmaxy(main.win) - 2)
+					main.highlight = getmaxy(main.win) - 2;
+				drawmainmenu(main.win, settings, false);
+				updatemainmenu(main.win, main.highlight);
+				break;
+			case KEY_UP:
+				main.highlight--;
+				if (main.highlight < 1)
+					main.highlight = 1;
+				drawmainmenu(main.win, settings, false);
+				updatemainmenu(main.win, main.highlight);
+				break;
+			case KEY.ENTER:
+				break;
+			default:
+		}
 	}
 }
