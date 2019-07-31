@@ -25,7 +25,7 @@ void main()
 	/* init all windows and curses itself */
 	WINDOW* barstdscr = initCurses();
 	WINDOW* mainmenu = newwin(to!(int)(2 + settings.categories.length), 20, getbegy(barstdscr) + 1, getbegx(barstdscr) + 3);
-	WINDOW* titlesopmenu = dupwin(mainmenu);
+	WINDOW* titlesopmenu = newwin(5, 20, getbegy(mainmenu), getbegx(mainmenu));
 
 
 	/* init Mywindows */
