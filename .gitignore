@@ -24,9 +24,13 @@ Animes.json
 settings.json
 dscanner.ini
 
+
 # Code coverage
 *.lst
 
 # directories
 bin/
 files/
+
+# Others
+*.plantuml
