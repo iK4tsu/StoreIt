@@ -6,6 +6,7 @@ import std.conv : to;
 import std.json;
 import std.string : strip, capitalize;
 import riverd.ncurses;
+import std.stdio : writeln, readln;
 
 
 struct Settings
@@ -42,6 +43,16 @@ Settings defaultSettings()
 
 	/* save file */
 	write(cwd ~ "/settings.json", j.toString);
+
+	writeln("Thank you for trying StoreIt as your new video library!");
+	writeln("It is recomended you use a terminal with 255 color support.");
+	writeln("Terminals that do not have this support will display the wrong colors, making readability much harder and bad for your precious eyes!");
+	writeln("Terminal recomendation: kitty.");
+	writeln("Because the program was made using 'kitty' as a visual reference, this is the terminal recomended for the use of the application.");
+	writeln("However, as long as your terminal supports all, or almost all, of the features implemented, you are free to use any terminal you want.");
+	writeln("Have fun, and StoreIt!");
+	writeln("Press any key to continue...");
+	readln();
 
 	return op;
 }

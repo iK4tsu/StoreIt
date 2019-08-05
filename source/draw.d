@@ -50,6 +50,7 @@ void initCustomColors()
 	init_color(COLOR.babyblue, 400, 988, 945);
 	init_color(COLOR.bluechill, 271, 635, 620);
 	init_color(COLOR.blackpearl, 98, 125, 161);
+	init_color(COLOR.mountainmeadow, 94, 820, 482);
 }
 
 
@@ -61,6 +62,8 @@ void initColorPairs()
 	init_pair(PAIR.stdscrbtn, COLOR.babyblue, COLOR.bunker);
 	init_pair(PAIR.stdscrbtn2, COLOR.linkwater, COLOR.bunker);
 
+	init_pair(PAIR.barsuggestion, COLOR.mountainmeadow, COLOR.bunker);
+	init_pair(PAIR.barsuggestionslct, COLOR.mountainmeadow, COLOR.blackpearl);
 	init_pair(PAIR.barstdscr, COLOR.bluechill, COLOR.bunker);
 	init_pair(PAIR.barstdsmb, COLOR.babyblue, COLOR.bunker);
 	init_pair(PAIR.barstdtxt, COLOR.linkwater, COLOR.bunker);
@@ -175,11 +178,21 @@ void drawbarstd(WINDOW* win)
 
 	wattron(win, COLOR_PAIR(PAIR.barstdsmb));			// atribute on
 	mvwaddch(win, 0, 4, ACS_DIAMOND);
+	mvwaddch(win, 0, 19, ACS_DIAMOND);
+	mvwaddch(win, 0, 38, ACS_DIAMOND);
 	wattroff(win, COLOR_PAIR(PAIR.barstdsmb));			// atribute off
 
 	wattron(win, COLOR_PAIR(PAIR.barstdtxt));
 	mvwaddstr(win, 0, 5, toStringz(" Menu"));
+	mvwaddstr(win, 0, 20, toStringz(" Settings"));
+	mvwaddstr(win, 0, 39, toStringz(" File"));
 	wattroff(win, COLOR_PAIR(PAIR.barstdtxt));
+
+	wattron(win, COLOR_PAIR(PAIR.barsuggestion | WA_BOLD));
+	mvwaddstr(win, 0, 10, toStringz(" <F1>"));
+	mvwaddstr(win, 0, 29, toStringz(" <F2>"));
+	mvwaddstr(win, 0, 44, toStringz(" <F3>"));
+	wattroff(win, COLOR_PAIR(PAIR.barsuggestion | WA_BOLD));
 
 	wattroff(win, WA_BOLD);
 	
@@ -199,6 +212,38 @@ void updatebarstd(WINDOW* win, int pos)
 			wattron(win, COLOR_PAIR(PAIR.barstdtxtslct | WA_BOLD));
 			mvwaddstr(win, 0, 5, toStringz(" Menu"));
 			wattroff(win, COLOR_PAIR(PAIR.barstdtxtslct | WA_BOLD));
+
+			wattron(win, COLOR_PAIR(PAIR.barsuggestionslct | WA_BOLD));
+			mvwaddstr(win, 0, 10, toStringz(" <F1>"));
+			wattroff(win, COLOR_PAIR(PAIR.barsuggestionslct | WA_BOLD));
+			break;
+
+		case 2:
+			wattron(win, COLOR_PAIR(PAIR.barstdslct | WA_BOLD));
+			mvwaddch(win, 0, 19, ACS_DIAMOND);
+			wattroff(win, COLOR_PAIR(PAIR.barstdslct | WA_BOLD));
+			
+			wattron(win, COLOR_PAIR(PAIR.barstdtxtslct | WA_BOLD));
+			mvwaddstr(win, 0, 20, toStringz(" Settings"));
+			wattroff(win, COLOR_PAIR(PAIR.barstdtxtslct | WA_BOLD));
+
+			wattron(win, COLOR_PAIR(PAIR.barsuggestionslct | WA_BOLD));
+			mvwaddstr(win, 0, 29, toStringz(" <F2>"));
+			wattroff(win, COLOR_PAIR(PAIR.barsuggestionslct | WA_BOLD));
+			break;
+
+		case 3:
+			wattron(win, COLOR_PAIR(PAIR.barstdslct | WA_BOLD));
+			mvwaddch(win, 0, 38, ACS_DIAMOND);
+			wattroff(win, COLOR_PAIR(PAIR.barstdslct | WA_BOLD));
+			
+			wattron(win, COLOR_PAIR(PAIR.barstdtxtslct | WA_BOLD));
+			mvwaddstr(win, 0, 39, toStringz(" File"));
+			wattroff(win, COLOR_PAIR(PAIR.barstdtxtslct | WA_BOLD));
+
+			wattron(win, COLOR_PAIR(PAIR.barsuggestionslct | WA_BOLD));
+			mvwaddstr(win, 0, 44, toStringz(" <F3>"));
+			wattroff(win, COLOR_PAIR(PAIR.barsuggestionslct | WA_BOLD));
 			break;
 	}
 	wrefresh(win);
@@ -217,21 +262,21 @@ void drawmainmenu(WINDOW* win, Settings settings, bool animation = true)
 
 	foreach(i, string cat; settings.categories)
 	{
-		if (animation)
+		if (animation)                                                     // drop down animetion
 		{
 			wattron(win, COLOR_PAIR(PAIR.mainmenu));
 			mvwhline(win, to!(int)(i + 1), 0, '=', getmaxx(win));          // animation bottom side
 			wrefresh(win);
 			delay_output(50);
 			wattron(win, COLOR_PAIR(PAIR.mainmenutxt) | WA_BOLD);
+			mvwaddnchh(win, to!(int)(i + 1), 0, ' ', getmaxx(win));        // clean current line
 		}
-		mvwaddnchh(win, to!(int)(i + 1), 0, ' ', getmaxx(win));
-		mvwaddch(win, to!(int)(i + 1), 1, ACS_BULLET);
-		mvwaddstr(win, to!(int)(i + 1), 3, toStringz(cat));
+		mvwaddch(win, to!(int)(i + 1), 1, ACS_BULLET);                     // button
+		mvwaddstr(win, to!(int)(i + 1), 3, toStringz(cat));                // category
 	}
 
 	wattron(win, COLOR_PAIR(PAIR.mainmenu));
-	mvwhline(win, getmaxy(win) - 1, 0, '=', getmaxx(win));
+	mvwhline(win, getmaxy(win) - 1, 0, '=', getmaxx(win));                 // bottom side
 	wattroff(win, COLOR_PAIR(PAIR.mainmenu));
 
 	wattroff(win, WA_BOLD);
@@ -250,6 +295,7 @@ void updatemainmenu(WINDOW* win, int pos)
 }
 
 
+/* drop down menu */
 void drawtitleopmenu(WINDOW* win, int pos, bool animation = true)
 {
 	werase(win);
@@ -263,21 +309,21 @@ void drawtitleopmenu(WINDOW* win, int pos, bool animation = true)
 
 	foreach(i, string cat; op)
 	{
-		if (animation)
+		if (animation)                                                     // drop down animetion
 		{
 			wattron(win, COLOR_PAIR(PAIR.titlesopmenu));
 			mvwhline(win, to!(int)(i + 1), 0, '=', getmaxx(win));          // animation bottom side
 			wrefresh(win);
 			delay_output(50);
 			wattron(win, COLOR_PAIR(PAIR.titlesopmenutxt) | WA_BOLD);
+			mvwaddnchh(win, to!(int)(i + 1), 0, ' ', getmaxx(win));        // clean current line
 		}
-		mvwaddnchh(win, to!(int)(i + 1), 0, ' ', getmaxx(win));
-		mvwaddch(win, to!(int)(i + 1), 1, ACS_BULLET);
-		mvwaddstr(win, to!(int)(i + 1), 3, toStringz(cat));
+		mvwaddch(win, to!(int)(i + 1), 1, ACS_BULLET);                     // button
+		mvwaddstr(win, to!(int)(i + 1), 3, toStringz(cat));                // category
 	}
 
 	wattron(win, COLOR_PAIR(PAIR.titlesopmenu));
-	mvwhline(win, getmaxy(win) - 1, 0, '=', getmaxx(win));
+	mvwhline(win, getmaxy(win) - 1, 0, '=', getmaxx(win));                 // bottom side
 	wattroff(win, COLOR_PAIR(PAIR.titlesopmenu));
 
 	wattroff(win, WA_BOLD);
@@ -287,6 +333,51 @@ void drawtitleopmenu(WINDOW* win, int pos, bool animation = true)
 
 
 void updatetitleopmenu(WINDOW* win, int pos)
+{
+	wattron(win, COLOR_PAIR(PAIR.titlesopmenubtnslct | WA_BOLD));
+	mvwaddch(win, pos, 1, ACS_DIAMOND);
+	wattroff(win, COLOR_PAIR(PAIR.titlesopmenubtnslct | WA_BOLD));
+
+	wrefresh(win);
+}
+
+
+void drawfileopmenu(WINDOW* win, bool animation = true)
+{
+	werase(win);
+	string[] op = ["Search", "Edit", "View"];
+
+	wbkgd(win, COLOR_PAIR(PAIR.mainmenu));
+	mvwhline(win, 0, 0, '=', getmaxx(win));                                // upper side
+
+	wattron(win, COLOR_PAIR(PAIR.mainmenutxt) | WA_BOLD);
+
+	foreach(i, string cat; op)
+	{
+		if (animation)                                                     // drop down animetion
+		{
+			wattron(win, COLOR_PAIR(PAIR.mainmenu));
+			mvwhline(win, to!(int)(i + 1), 0, '=', getmaxx(win));          // animation bottom side
+			wrefresh(win);
+			delay_output(50);
+			wattron(win, COLOR_PAIR(PAIR.mainmenutxt) | WA_BOLD);
+			mvwaddnchh(win, to!(int)(i + 1), 0, ' ', getmaxx(win));        // clean current line
+		}
+		mvwaddch(win, to!(int)(i + 1), 1, ACS_BULLET);                     // button
+		mvwaddstr(win, to!(int)(i + 1), 3, toStringz(cat));                // category
+	}
+
+	wattron(win, COLOR_PAIR(PAIR.mainmenu));
+	mvwhline(win, getmaxy(win) - 1, 0, '=', getmaxx(win));                 // bottom side
+	wattroff(win, COLOR_PAIR(PAIR.mainmenu));
+
+	wattroff(win, WA_BOLD);
+
+	wrefresh(win);
+}
+
+
+void updatefileopmenu(WINDOW* win, int pos)
 {
 	wattron(win, COLOR_PAIR(PAIR.titlesopmenubtnslct | WA_BOLD));
 	mvwaddch(win, pos, 1, ACS_DIAMOND);

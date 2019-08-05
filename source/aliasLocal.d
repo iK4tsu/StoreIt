@@ -43,6 +43,7 @@ struct COLORS
 	static immutable int babyblue = 29;
 	static immutable int bluechill = 30;
 	static immutable int blackpearl = 31;
+	static immutable int mountainmeadow = 32;
 }
 
 /* personalized color alias */
@@ -55,7 +56,9 @@ struct PAIRS
 	static immutable int stdscr = 1;                       // standard screen
 	static immutable int stdscrbtn = 2;                    // standard screen buttons
 	static immutable int stdscrbtn2 = 3;                   // statdard screen button color 2
-	
+
+	static immutable int barsuggestion = 4;                // bar suggestion shortcut keys
+	static immutable int barsuggestionslct = 5;            // bar suggestion shprtcut keys selection
 	static immutable int barstdscr = 6;                    // main bar
 	static immutable int barstdsmb = 7;                    // bar diamond symbol
 	static immutable int barstdtxt = 8;                    // bar text

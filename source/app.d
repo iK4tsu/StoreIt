@@ -1,6 +1,7 @@
 module source.app;
 
 import riverd.ncurses;
+import d2sqlite3;
 import std.string : toStringz;
 import std.file;
 import std.conv : to;
@@ -14,6 +15,7 @@ import source.settings;
 import source.manageTitles;
 import source.draw;
 import source.aliasLocal : COLOR_PAIR, PAIR;
+import dbtable;
 
 void main()
 {
@@ -25,13 +27,15 @@ void main()
 	/* init all windows and curses itself */
 	WINDOW* barstdscr = initCurses();
 	WINDOW* mainmenu = newwin(to!(int)(2 + settings.categories.length), 20, getbegy(barstdscr) + 1, getbegx(barstdscr) + 3);
-	WINDOW* titlesopmenu = dupwin(mainmenu);
+	WINDOW* titleopmenu = newwin(5, 20, getbegy(mainmenu), getbegx(mainmenu));
+	WINDOW* fileopmenu = newwin(5, 20, getbegy(mainmenu), getbegx(barstdscr) + 37);
 
 
 	/* init Mywindows */
 	Mywindow bar = properties(barstdscr, true);
 	Mywindow main = properties(mainmenu, true);
-	Mywindow tltop = properties(titlesopmenu, true);
+	Mywindow tltop = properties(titleopmenu, true);
+	Mywindow fileop = properties(fileopmenu, true);
 
 
 	/* all windows */
@@ -44,8 +48,16 @@ void main()
 	bool isOver = false;
 	string[] titles;
 
+	/* init db tables */
+	auto moviesdb = Database("./movies.db");
+	auto seriesdb = Database("./series.db");
+	auto animesdb = Database("./animes.db");
+
+	inittables(moviesdb, seriesdb, animesdb);
+
+
 	do {
-		string option = homewindow(main, bar, tltop, settings);
+		string option = homewindow(main, bar, tltop, fileop, settings);
 
 
 		/* ends program */

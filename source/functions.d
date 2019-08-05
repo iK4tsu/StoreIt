@@ -10,7 +10,7 @@ import source.titlesMenu;
 import source.list;
 import source.settings;
 import source.aliasLocal : KEY;
-import source.draw : drawmainmenu, drawHomeScreen, drawbarstd, updatebarstd, updatemainmenu, drawtitleopmenu, updatetitleopmenu;
+import source.draw : drawmainmenu, drawHomeScreen, drawbarstd, updatebarstd, updatemainmenu, drawtitleopmenu, updatetitleopmenu, drawfileopmenu, updatefileopmenu;
 
 /* write a sentence in the middle of a given line */
 void mvwprintcentery(WINDOW* win, int width, int line, string msg)
@@ -164,7 +164,7 @@ string getnumstring(WINDOW* win, int y, int x, string blank)
 }
 
 
-string homewindow(ref Mywindow main, ref Mywindow bar, ref Mywindow tltop, ref Settings settings)
+string homewindow(ref Mywindow main, ref Mywindow bar, ref Mywindow tltop, ref Mywindow fileop, ref Settings settings)
 {
 	int key;
 	drawHomeScreen(bar.win);
@@ -182,6 +182,27 @@ string homewindow(ref Mywindow main, ref Mywindow bar, ref Mywindow tltop, ref S
 					return mainWindow(main, bar, tltop, settings);
 				}
 				break;
+
+			case KEY_F(2):
+				if (bar.choice != KEY_F(2))
+				{
+					bar.choice = 2;
+					drawbarstd(bar.win);
+					updatebarstd(bar.win, bar.choice);
+				} 
+				break;
+
+			case KEY_F(3):
+				if (bar.choice != KEY_F(3))
+				{
+					bar.choice = 3;
+					drawbarstd(bar.win);
+					updatebarstd(bar.win, bar.choice);
+					drawfileopmenu(fileop.win);
+					return fileopwindow(main, bar, fileop, settings);
+				}
+				break;
+
 			case KEY.ESC:
 				return "exit";
 			default:
@@ -201,6 +222,7 @@ string mainWindow(ref Mywindow main, ref Mywindow bar, ref Mywindow tltop, ref S
 				main.highlight = 0;
 				drawHomeScreen(bar.win);
 				return "return";
+
 			case KEY_DOWN:
 				main.highlight++;
 				if (main.highlight > getmaxy(main.win) - 2)
@@ -208,6 +230,7 @@ string mainWindow(ref Mywindow main, ref Mywindow bar, ref Mywindow tltop, ref S
 				drawmainmenu(main.win, settings, false);
 				updatemainmenu(main.win, main.highlight);
 				break;
+
 			case KEY_UP:
 				main.highlight--;
 				if (main.highlight < 1)
@@ -215,6 +238,7 @@ string mainWindow(ref Mywindow main, ref Mywindow bar, ref Mywindow tltop, ref S
 				drawmainmenu(main.win, settings, false);
 				updatemainmenu(main.win, main.highlight);
 				break;
+
 			case KEY.ENTER:
 				if (main.highlight < 1)
 				{
@@ -229,6 +253,7 @@ string mainWindow(ref Mywindow main, ref Mywindow bar, ref Mywindow tltop, ref S
 					main.highlight = 0;
 					return s;
 				}
+
 			default:
 				if (main.highlight < 1)
 				{
@@ -254,6 +279,7 @@ string titleopWindow(ref Mywindow main, ref Mywindow bar, ref Mywindow tltop, re
 				drawmainmenu(main.win, settings, false);
 				updatemainmenu(main.win, main.highlight);
 				return "return";
+
 			case KEY_DOWN:
 				tltop.highlight++;
 				if (tltop.highlight > getmaxy(tltop.win) - 2)
@@ -262,6 +288,7 @@ string titleopWindow(ref Mywindow main, ref Mywindow bar, ref Mywindow tltop, re
 				drawtitleopmenu(tltop.win, main.highlight, false);
 				updatetitleopmenu(tltop.win, tltop.highlight);
 				break;
+
 			case KEY_UP:
 				tltop.highlight--;
 				if (tltop.highlight < 1)
@@ -270,6 +297,7 @@ string titleopWindow(ref Mywindow main, ref Mywindow bar, ref Mywindow tltop, re
 				drawtitleopmenu(tltop.win, main.highlight, false);
 				updatetitleopmenu(tltop.win, tltop.highlight);
 				break;
+
 			case KEY.ENTER:
 				if (tltop.highlight < 1)
 				{
@@ -289,12 +317,47 @@ string titleopWindow(ref Mywindow main, ref Mywindow bar, ref Mywindow tltop, re
 						tltop.highlight = 0;
 						return "Finish";
 				}
+
 			default:
 				if (tltop.highlight < 1)
 				{
 					tltop.highlight = 1;
 					updatemainmenu(tltop.win, tltop.highlight);
 				}
+		}
+	}
+}
+
+
+string fileopwindow(ref Mywindow main, ref Mywindow bar, ref Mywindow fileop, ref Settings settings)
+{
+	while (true)
+	{
+		switch (fileop.choice = getch())
+		{
+			case KEY.ESC:
+				fileop.highlight = 0;
+				drawHomeScreen(bar.win);
+				return "return";
+
+			case KEY_DOWN:
+				fileop.highlight++;
+				if (fileop.highlight > getmaxy(fileop.win) - 2)
+					fileop.highlight = getmaxy(fileop.win) - 2;
+				drawfileopmenu(fileop.win, false);
+				updatefileopmenu(fileop.win, fileop.highlight);
+				break;
+
+			case KEY_UP:
+				fileop.highlight--;
+				if (fileop.highlight < 1)
+					fileop.highlight = 1;
+				drawfileopmenu(fileop.win, false);
+				updatefileopmenu(fileop.win, fileop.highlight);
+				break;
+
+			default:
+
 		}
 	}
 }
