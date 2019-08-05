@@ -182,6 +182,25 @@ string homewindow(ref Mywindow main, ref Mywindow bar, ref Mywindow tltop, ref S
 					return mainWindow(main, bar, tltop, settings);
 				}
 				break;
+
+			case KEY_F(2):
+				if (bar.choice != KEY_F(2))
+				{
+					bar.choice = 2;
+					drawbarstd(bar.win);
+					updatebarstd(bar.win, bar.choice);
+				} 
+				break;
+
+			case KEY_F(3):
+				if (bar.choice != KEY_F(3))
+				{
+					bar.choice = 3;
+					drawbarstd(bar.win);
+					updatebarstd(bar.win, bar.choice);
+				}
+				break;
+
 			case KEY.ESC:
 				return "exit";
 			default:

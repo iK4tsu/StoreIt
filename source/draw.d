@@ -179,16 +179,19 @@ void drawbarstd(WINDOW* win)
 	wattron(win, COLOR_PAIR(PAIR.barstdsmb));			// atribute on
 	mvwaddch(win, 0, 4, ACS_DIAMOND);
 	mvwaddch(win, 0, 19, ACS_DIAMOND);
+	mvwaddch(win, 0, 38, ACS_DIAMOND);
 	wattroff(win, COLOR_PAIR(PAIR.barstdsmb));			// atribute off
 
 	wattron(win, COLOR_PAIR(PAIR.barstdtxt));
 	mvwaddstr(win, 0, 5, toStringz(" Menu"));
 	mvwaddstr(win, 0, 20, toStringz(" Settings"));
+	mvwaddstr(win, 0, 39, toStringz(" File"));
 	wattroff(win, COLOR_PAIR(PAIR.barstdtxt));
 
 	wattron(win, COLOR_PAIR(PAIR.barsuggestion | WA_BOLD));
 	mvwaddstr(win, 0, 10, toStringz(" <F1>"));
 	mvwaddstr(win, 0, 29, toStringz(" <F2>"));
+	mvwaddstr(win, 0, 44, toStringz(" <F3>"));
 	wattroff(win, COLOR_PAIR(PAIR.barsuggestion | WA_BOLD));
 
 	wattroff(win, WA_BOLD);
@@ -214,6 +217,7 @@ void updatebarstd(WINDOW* win, int pos)
 			mvwaddstr(win, 0, 10, toStringz(" <F1>"));
 			wattroff(win, COLOR_PAIR(PAIR.barsuggestionslct | WA_BOLD));
 			break;
+
 		case 2:
 			wattron(win, COLOR_PAIR(PAIR.barstdslct | WA_BOLD));
 			mvwaddch(win, 0, 19, ACS_DIAMOND);
@@ -225,6 +229,20 @@ void updatebarstd(WINDOW* win, int pos)
 
 			wattron(win, COLOR_PAIR(PAIR.barsuggestionslct | WA_BOLD));
 			mvwaddstr(win, 0, 29, toStringz(" <F2>"));
+			wattroff(win, COLOR_PAIR(PAIR.barsuggestionslct | WA_BOLD));
+			break;
+
+		case 3:
+			wattron(win, COLOR_PAIR(PAIR.barstdslct | WA_BOLD));
+			mvwaddch(win, 0, 38, ACS_DIAMOND);
+			wattroff(win, COLOR_PAIR(PAIR.barstdslct | WA_BOLD));
+			
+			wattron(win, COLOR_PAIR(PAIR.barstdtxtslct | WA_BOLD));
+			mvwaddstr(win, 0, 39, toStringz(" File"));
+			wattroff(win, COLOR_PAIR(PAIR.barstdtxtslct | WA_BOLD));
+
+			wattron(win, COLOR_PAIR(PAIR.barsuggestionslct | WA_BOLD));
+			mvwaddstr(win, 0, 44, toStringz(" <F3>"));
 			wattroff(win, COLOR_PAIR(PAIR.barsuggestionslct | WA_BOLD));
 			break;
 	}
