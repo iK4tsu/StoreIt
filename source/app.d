@@ -28,7 +28,7 @@ void main()
 	WINDOW* barstdscr = initCurses();
 	WINDOW* mainmenu = newwin(to!(int)(2 + settings.categories.length), 20, getbegy(barstdscr) + 1, getbegx(barstdscr) + 3);
 	WINDOW* titleopmenu = newwin(5, 20, getbegy(mainmenu), getbegx(mainmenu));
-	WINDOW* fileopmenu = newwin(5, 20, getbegy(mainmenu), getbegx(barstdscr) + 18);
+	WINDOW* fileopmenu = newwin(5, 20, getbegy(mainmenu), getbegx(barstdscr) + 37);
 
 
 	/* init Mywindows */
