@@ -10,7 +10,7 @@ import source.titlesMenu;
 import source.list;
 import source.settings;
 import source.aliasLocal : KEY;
-import source.draw : drawmainmenu, drawHomeScreen, drawbarstd, updatebarstd, updatemainmenu, drawtitleopmenu, updatetitleopmenu;
+import source.draw : drawmainmenu, drawHomeScreen, drawbarstd, updatebarstd, updatemainmenu, drawtitleopmenu, updatetitleopmenu, drawfileopmenu, updatefileopmenu;
 
 /* write a sentence in the middle of a given line */
 void mvwprintcentery(WINDOW* win, int width, int line, string msg)
@@ -198,6 +198,8 @@ string homewindow(ref Mywindow main, ref Mywindow bar, ref Mywindow tltop, ref M
 					bar.choice = 3;
 					drawbarstd(bar.win);
 					updatebarstd(bar.win, bar.choice);
+					drawfileopmenu(fileop.win);
+					return fileopwindow(main, bar, fileop, settings);
 				}
 				break;
 
@@ -322,6 +324,40 @@ string titleopWindow(ref Mywindow main, ref Mywindow bar, ref Mywindow tltop, re
 					tltop.highlight = 1;
 					updatemainmenu(tltop.win, tltop.highlight);
 				}
+		}
+	}
+}
+
+
+string fileopwindow(ref Mywindow main, ref Mywindow bar, ref Mywindow fileop, ref Settings settings)
+{
+	while (true)
+	{
+		switch (fileop.choice = getch())
+		{
+			case KEY.ESC:
+				fileop.highlight = 0;
+				drawHomeScreen(bar.win);
+				return "return";
+
+			case KEY_DOWN:
+				fileop.highlight++;
+				if (fileop.highlight > getmaxy(fileop.win) - 2)
+					fileop.highlight = getmaxy(fileop.win) - 2;
+				drawfileopmenu(fileop.win, false);
+				updatefileopmenu(fileop.win, fileop.highlight);
+				break;
+
+			case KEY_UP:
+				fileop.highlight--;
+				if (fileop.highlight < 1)
+					fileop.highlight = 1;
+				drawfileopmenu(fileop.win, false);
+				updatefileopmenu(fileop.win, fileop.highlight);
+				break;
+
+			default:
+
 		}
 	}
 }
