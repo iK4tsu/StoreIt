@@ -164,7 +164,7 @@ string getnumstring(WINDOW* win, int y, int x, string blank)
 }
 
 
-string homewindow(ref Mywindow main, ref Mywindow bar, ref Mywindow tltop, ref Settings settings)
+string homewindow(ref Mywindow main, ref Mywindow bar, ref Mywindow tltop, ref Mywindow fileop, ref Settings settings)
 {
 	int key;
 	drawHomeScreen(bar.win);
@@ -220,6 +220,7 @@ string mainWindow(ref Mywindow main, ref Mywindow bar, ref Mywindow tltop, ref S
 				main.highlight = 0;
 				drawHomeScreen(bar.win);
 				return "return";
+
 			case KEY_DOWN:
 				main.highlight++;
 				if (main.highlight > getmaxy(main.win) - 2)
@@ -227,6 +228,7 @@ string mainWindow(ref Mywindow main, ref Mywindow bar, ref Mywindow tltop, ref S
 				drawmainmenu(main.win, settings, false);
 				updatemainmenu(main.win, main.highlight);
 				break;
+
 			case KEY_UP:
 				main.highlight--;
 				if (main.highlight < 1)
@@ -234,6 +236,7 @@ string mainWindow(ref Mywindow main, ref Mywindow bar, ref Mywindow tltop, ref S
 				drawmainmenu(main.win, settings, false);
 				updatemainmenu(main.win, main.highlight);
 				break;
+
 			case KEY.ENTER:
 				if (main.highlight < 1)
 				{
@@ -248,6 +251,7 @@ string mainWindow(ref Mywindow main, ref Mywindow bar, ref Mywindow tltop, ref S
 					main.highlight = 0;
 					return s;
 				}
+
 			default:
 				if (main.highlight < 1)
 				{
@@ -273,6 +277,7 @@ string titleopWindow(ref Mywindow main, ref Mywindow bar, ref Mywindow tltop, re
 				drawmainmenu(main.win, settings, false);
 				updatemainmenu(main.win, main.highlight);
 				return "return";
+
 			case KEY_DOWN:
 				tltop.highlight++;
 				if (tltop.highlight > getmaxy(tltop.win) - 2)
@@ -281,6 +286,7 @@ string titleopWindow(ref Mywindow main, ref Mywindow bar, ref Mywindow tltop, re
 				drawtitleopmenu(tltop.win, main.highlight, false);
 				updatetitleopmenu(tltop.win, tltop.highlight);
 				break;
+
 			case KEY_UP:
 				tltop.highlight--;
 				if (tltop.highlight < 1)
@@ -289,6 +295,7 @@ string titleopWindow(ref Mywindow main, ref Mywindow bar, ref Mywindow tltop, re
 				drawtitleopmenu(tltop.win, main.highlight, false);
 				updatetitleopmenu(tltop.win, tltop.highlight);
 				break;
+
 			case KEY.ENTER:
 				if (tltop.highlight < 1)
 				{
@@ -308,6 +315,7 @@ string titleopWindow(ref Mywindow main, ref Mywindow bar, ref Mywindow tltop, re
 						tltop.highlight = 0;
 						return "Finish";
 				}
+
 			default:
 				if (tltop.highlight < 1)
 				{
