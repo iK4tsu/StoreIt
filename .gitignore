@@ -34,3 +34,4 @@ files/
 
 # Others
 *.plantuml
+*.db
