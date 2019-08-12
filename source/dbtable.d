@@ -27,7 +27,8 @@ void inittables(ref Database moviesdb, ref Database seriesdb, Database animesdb)
 					EPISODES        INTEGER,
 					EPISODE         INTEGER,
 					OFFICIAL_STATUS TEXT NOT NULL,
-					STATUS          TEXT NOT NULL)"
+					STATUS          TEXT NOT NULL,
+					NEXT_EPISODE    TEXT NOT NULL)"
 	);
 
 	animesdb.run("CREATE TABLE IF NOT EXISTS animes (
@@ -43,6 +44,7 @@ void inittables(ref Database moviesdb, ref Database seriesdb, Database animesdb)
 					EPISODES        INTEGER,
 					EPISODE         INTEGER,
 					OFFICIAL_STATUS TEXT NOT NULL,
-					STATUS          TEXT NOT NULL)"
+					STATUS          TEXT NOT NULL,
+					NEXT_EPISODE    TEXT NOT NULL)"
 	);
 }
