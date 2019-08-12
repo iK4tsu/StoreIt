@@ -1,4 +1,4 @@
-module source.titlesMenu;
+module titlesMenu;
 
 import riverd.ncurses;
 import std.file : readText;
@@ -9,7 +9,7 @@ import std.stdio : readln, writeln;
 import std.algorithm : cmp;
 import std.array : split;
 
-import source.functions;
+import functions;
 
 string[] tmenu(ref Mywindow titleScreen, string sChoice)
 {

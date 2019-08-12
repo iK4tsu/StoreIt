@@ -1,4 +1,4 @@
-module source.settings;
+module settings;
 
 import std.file : exists, mkdir, getcwd, write, read;
 import std.process : environment;

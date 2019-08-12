@@ -1,4 +1,4 @@
-module source.manageTitles;
+module manageTitles;
 
 import riverd.ncurses;
 import std.json;
@@ -8,8 +8,8 @@ import std.conv : to;
 import std.string : toStringz, chomp;
 import std.array : split;
 
-import source.settings;
-import source.functions;
+import settings;
+import functions;
 
 pragma(inline, true);
 void drawbox(WINDOW* manageScreen, int y, int x,
