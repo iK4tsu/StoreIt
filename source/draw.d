@@ -1,12 +1,12 @@
-module source.draw;
+module draw;
 
 import riverd.ncurses;
 import std.string : toStringz;
 import std.conv : to;
 
-import source.aliasLocal : COLOR_PAIR, COLOR, PAIR;
-import source.functions : mvaddnchh, mvaddnchv, mvwaddnchh, mvwaddnchv;
-import source.settings : Settings;
+import aliasLocal : COLOR_PAIR, COLOR, PAIR;
+import functions : mvaddnchh, mvaddnchv, mvwaddnchh, mvwaddnchv;
+import settings : Settings;
 
 WINDOW* initCurses()
 {
@@ -77,6 +77,13 @@ void initColorPairs()
 	init_pair(PAIR.titlesopmenu, COLOR.bluechill, COLOR.bunker);
 	init_pair(PAIR.titlesopmenutxt, COLOR.linkwater, COLOR.bunker);
 	init_pair(PAIR.titlesopmenubtnslct, COLOR.cardinal, COLOR.bunker);
+
+	init_pair(PAIR.manageopmenu, COLOR.blackrussian2, COLOR.bunker);
+
+	init_pair(PAIR.barmngmenu, COLOR.bluechill, COLOR.blackrussian2);
+	init_pair(PAIR.barmngtxt, COLOR.linkwater, COLOR.blackrussian2);
+	init_pair(PAIR.barmngsmb, COLOR.bluechill, COLOR.blackrussian2);
+	init_pair(PAIR.barmngsuggestion, COLOR.mountainmeadow, COLOR.blackrussian2);
 }
 
 
@@ -384,4 +391,43 @@ void updatefileopmenu(WINDOW* win, int pos)
 	wattroff(win, COLOR_PAIR(PAIR.titlesopmenubtnslct | WA_BOLD));
 
 	wrefresh(win);
+}
+
+
+void drawmanagewindow(WINDOW* mng, WINDOW* barmng)
+{
+	wbkgd(mng, COLOR_PAIR(PAIR.manageopmenu));
+	
+	wrefresh(mng);
+	drawbarmanagewindow(barmng);
+}
+
+
+void drawbarmanagewindow(WINDOW* barmng)
+{
+		wbkgd(barmng, COLOR_PAIR(PAIR.barmngmenu));
+
+		wattron(barmng, WA_BOLD);								// make characters thicker
+
+		wattron(barmng, COLOR_PAIR(PAIR.barmngsmb));			// atribute on
+		mvwaddch(barmng, 0, 4, ACS_DIAMOND);
+		mvwaddch(barmng, 0, 19, ACS_DIAMOND);
+		mvwaddch(barmng, 0, 41, ACS_DIAMOND);
+		wattroff(barmng, COLOR_PAIR(PAIR.barmngsmb));			// atribute off
+
+		wattron(barmng, COLOR_PAIR(PAIR.barmngtxt));
+		mvwaddstr(barmng, 0, 5, toStringz(" Name"));
+		mvwaddstr(barmng, 0, 20, toStringz(" Description"));
+		mvwaddstr(barmng, 0, 42, toStringz(" Oficial Status"));
+		wattroff(barmng, COLOR_PAIR(PAIR.barmngtxt));
+
+		wattron(barmng, COLOR_PAIR(PAIR.barmngsuggestion | WA_BOLD));
+		mvwaddstr(barmng, 0, 10, toStringz(" <F1>"));
+		mvwaddstr(barmng, 0, 32, toStringz(" <F2>"));
+		mvwaddstr(barmng, 0, 57, toStringz(" <F3>"));
+		wattroff(barmng, COLOR_PAIR(PAIR.barmngsuggestion | WA_BOLD));
+
+		wattroff(barmng, WA_BOLD);
+
+		wrefresh(barmng);
 }
