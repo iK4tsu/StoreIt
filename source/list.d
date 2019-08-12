@@ -1,4 +1,4 @@
-module source.list;
+module list;
 
 import riverd.ncurses;
 import std.algorithm : canFind, sort, remove;
