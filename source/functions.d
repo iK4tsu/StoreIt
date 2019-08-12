@@ -1,4 +1,4 @@
-module source.functions;
+module functions;
 
 import riverd.ncurses;
 import std.string : toStringz;
@@ -6,11 +6,11 @@ import std.process : environment;
 import std.conv : to;
 import std.algorithm : cmp;
 
-import source.titlesMenu;
-import source.list;
-import source.settings;
-import source.aliasLocal : KEY;
-import source.draw : drawmainmenu, drawHomeScreen, drawbarstd, updatebarstd, updatemainmenu, drawtitleopmenu, updatetitleopmenu, drawfileopmenu, updatefileopmenu;
+import titlesMenu;
+import list;
+import settings;
+import aliasLocal : KEY;
+import draw : drawmainmenu, drawHomeScreen, drawbarstd, updatebarstd, updatemainmenu, drawtitleopmenu, updatetitleopmenu, drawfileopmenu, updatefileopmenu;
 
 /* write a sentence in the middle of a given line */
 void mvwprintcentery(WINDOW* win, int width, int line, string msg)
