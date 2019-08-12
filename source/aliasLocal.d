@@ -1,8 +1,8 @@
-module source.aliasLocal;
+module aliasLocal;
 
 import riverd.ncurses;
 
-import source.functions;
+import functions;
 
 /* special keys */
 struct KEYS
@@ -58,7 +58,7 @@ struct PAIRS
 	static immutable int stdscrbtn2 = 3;                   // statdard screen button color 2
 
 	static immutable int barsuggestion = 4;                // bar suggestion shortcut keys
-	static immutable int barsuggestionslct = 5;            // bar suggestion shprtcut keys selection
+	static immutable int barsuggestionslct = 5;            // bar suggestion shortcut keys selection
 	static immutable int barstdscr = 6;                    // main bar
 	static immutable int barstdsmb = 7;                    // bar diamond symbol
 	static immutable int barstdtxt = 8;                    // bar text
@@ -72,6 +72,15 @@ struct PAIRS
 	static immutable int titlesopmenu = 16;                // option menu to add, remove, finish
 	static immutable int titlesopmenutxt = 17;             // option menu text
 	static immutable int titlesopmenubtnslct = 18;         // option menu button selection
+
+	static immutable int manageopmenu = 21;                // manage options menu
+	static immutable int manageopbtn = 22;
+	static immutable int manageopbtn2 = 23;
+
+	static immutable int barmngmenu = 26;                  // bar for manage menu
+	static immutable int barmngtxt = 27;                   // bar text
+	static immutable int barmngsmb = 28;
+	static immutable int barmngsuggestion = 29;
 }
 
 /* color pair alias */
